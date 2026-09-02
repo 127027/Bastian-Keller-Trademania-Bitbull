@@ -82,7 +82,7 @@ Diese Matrix verhindert, dass Anforderungen nur im Text existieren. Sie ist auf 
 | BTK-EXE-006 10s UNKNOWN | DMS 07/20 | Execution | Timeout-Test |
 | BTK-EXE-007 Source -> Fusion/Risk -> Intent | DMS 03/07/09 | Strategy/Execution | E2E-Source-Order-Test |
 | BTK-OPS-001 24/7 Paper vor Live | DMS 10/12 | Operations | Soak-Nachweis |
-| BTK-OPS-002 30d/720bars/20 Trades max90 | DMS 10/12 | Operations | Soak-Report |
+| BTK-OPS-002 30 Tage + timeframe-abgeleitete Barabdeckung + 20 Trades/max. 90 Tage | DMS 02/10/13 | Operations | Soak-Report + Timeframe-Ableitung |
 | BTK-OPS-003 Telegram P1/P2 | DMS 10 | Alerts | Testalarm |
 | BTK-OPS-004 Backup/Restore/Not-Aus/Data+Source Health | DMS 10/20 | Operations | Restore-/Failure-Test |
 | BTK-OPS-005 Live nicht nur wegen Backtest | DMS 12 | Release Gate | Freigabe-Negativtest |
