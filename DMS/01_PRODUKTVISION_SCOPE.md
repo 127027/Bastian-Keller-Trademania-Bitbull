@@ -4,15 +4,22 @@ Status: `VERBINDLICH` für den technischen Unterbau; konkrete Strategiequelle bl
 
 ## Produktziel
 
-Dieses Repository beschreibt einen eigenständigen **Bastian-Keller-/TradeMania-/Bitbull-Trading-Bot**. Der Bot soll den künftig bereitgestellten Originalindikator deterministisch auswerten und eindeutige, aktuelle Aussagen von Bastian Keller aus freigegebenen offiziellen Live-/Update-Quellen nach genau dokumentierten Regeln in Handelskontext bzw. handelbare Strategieereignisse überführen.
+Dieses Repository beschreibt einen eigenständigen **Bastian-Keller-/TradeMania-/Bitbull-Trading-Bot**. Der Bot soll einen bewusst ausgewählten, rechtmäßig zugänglichen TradeMania-/Bitbull-Indikator bzw. minimalen Indikatorstack deterministisch auswerten und eindeutige, aktuelle Aussagen von Bastian Keller aus freigegebenen offiziellen Live-/Update-Quellen nach genau dokumentierten Regeln in Handelskontext bzw. handelbare Strategieereignisse überführen.
 
 Der technische Unterbau wird nicht unnötig neu erfunden. Bewährte generische Komponenten dürfen gezielt wiederverwendet werden, wenn sie strategiespezifisch neutral sind. Die neue Source-/Live-Schicht wird nur dort ergänzt, wo der bestehende Unterbau diese Verantwortung noch nicht besitzt.
+
+## Aktueller Indikatorstatus
+
+Öffentlich verifiziert ist derzeit der Kandidat **`Trademania - PVSRA Indicator`** des TradingView-Publishers `BitbullTrading`. Er bietet laut öffentlicher Beschreibung u. a. PVSRA-/Vector-Candles, Imbalance-Zonen, EMAs, Pivots/M-Levels, POC, WIL, Sessions, ADR/AWR und Vorperiodenlevels.
+
+Dieser Kandidat ist **noch nicht automatisch der Zielindikator**. Vor dem Strategie-Freeze werden zusätzlich die nach Registrierung verfügbaren TradeMania Indicator-/Strategie-Indicator-Masterclasses, Discord-Inhalte und `trademania.app/bots` inventarisiert. V1 soll den kleinsten reproduzierbaren Stack verwenden, den Bastian aktuell tatsächlich nutzt und der für ETH/Startuniversum sinnvoll ist.
 
 ## Erfolgsbild
 
 Ein fachkundiger Dritter kann später:
 
-- erklären, wann der Originalindikator ein Signal erzeugt;
+- erklären, warum genau der ausgewählte Indikator/Stack gewählt wurde;
+- erklären, wann der Originalindikator ein Signal, Level oder nur Kontext erzeugt;
 - erklären, wann eine Bastian-Aussage nur Kontext, eine Pending Condition oder ein handelbares Signal ist;
 - nachvollziehen, wie Live/Replay, Sprecher, Asset, Bedingung, Freshness, Revision und Latenz geprüft wurden;
 - Botreaktionen mit Originalindikator und gelabelten Referenz-Lives vergleichen;
@@ -33,7 +40,8 @@ Ein fachkundiger Dritter kann später:
 - UI-Zeiträume Heute, 1W, 1M, 1J, 3J;
 - 24/7-Paper als Pflichtstufe vor Live;
 - Audit, Metriken, Alerts, Backup und Recovery;
-- Originalindikator als technische Strategiequelle;
+- Kandidateninventar und begründete Zielindikator-Auswahl;
+- final ausgewählter Originalindikator als technische Strategiequelle;
 - Bastian Keller als primäre menschliche Strategiequelle;
 - Source-Allowlist und dynamische Live-/Update-Erkennung;
 - technisch/rechtlich zulässigen Capture-Pfad je Quelle;
@@ -46,11 +54,13 @@ Ein fachkundiger Dritter kann später:
 
 ## Noch offen
 
-Bis Originalindikator und rechtmäßig zugängliche Member-/Live-Quellen vorliegen, bleiben insbesondere offen:
+Bis Member-Inventar, finaler Zielindikator und rechtmäßig zugängliche Live-Quellen vollständig geprüft sind, bleiben insbesondere offen:
 
-- exakter Indikatorname, Version, Publisher und Inputs;
+- finaler Indikator/Stack, Version, Publisher und Inputs;
+- welche PVSRA-Funktionen Bastian aktuell wirklich entscheidungsrelevant nutzt;
+- welche zusätzlichen Member-Indikatoren/Bots tatsächlich relevant sind;
 - Signal-Timeframe/Multi-Timeframe-Verhalten;
-- Kauf-/Verkaufs-/Trend-/Filterlogik;
+- Kauf-/Verkaufs-/Trend-/Level-/Filterlogik;
 - Bar-Close/Intrabar/Repainting;
 - Warm-up und Initialzustand;
 - Alerts und Overlays;
@@ -71,6 +81,7 @@ Bis Originalindikator und rechtmäßig zugängliche Member-/Live-Quellen vorlieg
 
 - erfundene Indikatorlogik;
 - erfundene oder aus dem Kontext gerissene Bastian-Aussagen;
+- blindes Stapeln von MACD/RSI/POC oder anderen Tools ohne aktuelle Bastian-Evidence;
 - Gewinn- oder Renditeversprechen;
 - Futures, Margin, Leverage oder Short ohne neue Freigabe;
 - Martingale/Grid/DCA/Pyramiding ohne belegte Strategieanforderung;
@@ -91,7 +102,7 @@ Sicherer Standard nach Installation, Restore oder ungeklärter Synchronisation i
 
 ## Strategieebenen
 
-- `INDICATOR_SIGNAL`: technischer Originalindikatorzustand;
+- `INDICATOR_SIGNAL`: technischer Zustand/Signal/Level des final ausgewählten Indikators;
 - `BASTIAN_STATEMENT`: strukturierte Aussage, noch nicht automatisch handelbar;
 - `BASTIAN_CONTEXT`: gültiger Markt-/Szenariokontext;
 - `PENDING_CONDITION`: konditionale Aussage, die auf bestätigte Marktbedingung wartet;
