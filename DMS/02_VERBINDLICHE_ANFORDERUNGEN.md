@@ -8,10 +8,11 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 |---|---|---|
 | BTK-STR-001 | Nur die in DMS 03 eingefrorene BTK-Strategie darf Orders erzeugen. | VERBINDLICH |
 | BTK-STR-002 | Fehlende Indikator- oder Bastian-Regeln werden nicht erfunden. | VERBINDLICH |
-| BTK-STR-003 | Indikatorname, Version, Inputs, Timeframe, Signal-/Zustandslogik werden vollständig dokumentiert. | OFFEN |
+| BTK-STR-003 | Finaler Indikator/Stack, Version, Inputs, Timeframe, Signal-/Level-/Zustandslogik werden vollständig dokumentiert. | OFFEN |
 | BTK-STR-004 | Intrabar, Bar-Close und Repainting werden vor Implementierung geprüft. | OFFEN |
 | BTK-STR-005 | Jede Entscheidung speichert Symbol, Zeit, Strategieversion, Quellen-/Parameterhash und Grund. | VERBINDLICH |
 | BTK-STR-006 | Indikatorparität wird über Golden-/Black-Box-Referenzen nachgewiesen. | NACHWEIS AUSSTEHEND |
+| BTK-STR-007 | Vor dem Strategie-Freeze wird das verfügbare öffentliche + Member-Indikator-/Bot-Inventar geprüft; V1 verwendet nur den kleinsten begründeten Zielstack, dessen aktuelle Rolle bei Bastian und Eignung für BTK belegt ist. | VERBINDLICH |
 | BTK-SRC-001 | Primäre menschliche Quelle ist Bastian Keller. Andere Mentoren handeln nicht automatisch. | VERBINDLICH |
 | BTK-SRC-002 | Live-/Update-Aussagen werden erst nach Strukturierung und Freshness-Prüfung handelbar. | VERBINDLICH |
 | BTK-SRC-003 | Replay, alte Videos, Zuschauerfragen und historische Beschreibungen dürfen nicht als aktuelle Orders missverstanden werden. | VERBINDLICH |
@@ -53,6 +54,8 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-DAT-004 | Täglicher Vollaudit um 00:05 UTC. | VERBINDLICH |
 | BTK-DAT-005 | Stream mit REST-Fallback; provisorische Bars bleiben markiert. | VERBINDLICH |
 | BTK-DAT-006 | Ob offene Bars signalrelevant sind, entscheidet ausschließlich DMS 03. | OFFEN |
+| BTK-DAT-007 | Für den finalen Indikator werden Preis-, Volumen-, Session-, Footprint-/POC- und sonstige Datenquellen getrennt dokumentiert; keine automatische Annahme, dass alle Berechnungen dieselbe Börsenquelle verwenden. | OFFEN |
+| BTK-DAT-008 | Falls der Zielindikator einen Cross-Exchange-/Volume-Override oder andere Datenüberschreibung verwendet, müssen Referenztest, Backtest, Paper und Live dieselbe Source-Mapping-Regel reproduzieren oder die Abweichung explizit als nicht-paritätisch markieren. | VERBINDLICH |
 
 ## Backtest, Replay und Vergleich
 
@@ -69,6 +72,7 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-BKT-009 | Bastian-Source-Replay muss Published-/Received-/Spoken-Time, Revisionen, Sessionstatus und Freshness chronologisch respektieren. | NACHWEIS AUSSTEHEND |
 | BTK-BKT-010 | Der spätere Botvergleich verwendet denselben Daten-Snapshot, dieselben Märkte, Kosten, Kapitalregeln und denselben Forward-Paper-Zeitraum. | VERBINDLICH |
 | BTK-BKT-011 | Vergleichsmetriken enthalten mindestens Netto-PnL, Netto-PnL/Tag, Drawdown, Profit Factor soweit stabil, Kosten, Kapitalnutzung, technische Ausfälle und Source-/Execution-Latenz. | VERBINDLICH |
+| BTK-BKT-012 | Kandidaten werden nicht allein nach historischem PnL ausgewählt; Indikatorparität, Bastian-Nähe, Repainting, Datenparität, Robustheit und Forward-Paper gehen der Performanceoptimierung vor. | VERBINDLICH |
 
 ## Execution
 
