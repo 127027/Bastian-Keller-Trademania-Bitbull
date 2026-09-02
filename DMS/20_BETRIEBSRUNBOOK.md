@@ -6,19 +6,25 @@ Status: `VERBINDLICH` für den BTK-Betriebsunterbau; signalaktive Strategie blei
 
 1. Modus `BACKTEST` oder `PAPER`; `LIVE` aus.
 2. DMS-/Strategie-/Configversion prüfen.
-3. `BTK-INDICATOR-SPEC-1.0` muss eingefroren sein, bevor signalaktive BTK-Verarbeitung aktiviert werden darf.
-4. zehn Coins, Börse, Strategie-Timeframe und Kostenmodell prüfen.
-5. Source-Allowlist, Session-Discovery, Capture-Modi, Freshness-/Konflikt-/Latenzregeln prüfen.
-6. Secret-Referenzen testen; Werte nie anzeigen.
-7. Speicher, Systemzeit, Backupziel prüfen.
-8. Startup-Report vollständig abwarten.
-9. nur bei `HEALTHY` und bestandener Strategie-/Source-Parität Paper-Signale freigeben.
+3. Kandidateninventar-/Auswahlversion und finalen Zielstack prüfen.
+4. `BTK-INDICATOR-SPEC-1.0` muss eingefroren sein, bevor signalaktive BTK-Verarbeitung aktiviert werden darf.
+5. zehn Coins, Börse, Strategie-Timeframe und Kostenmodell prüfen.
+6. Indicator-Data-Source-Mapping prüfen: Preisprovider, Volumenprovider/Override, Marktart, Sessiontimezone/DST, Footprint-/POC-Pfad soweit relevant.
+7. Source-Allowlist, Session-Discovery, Capture-Modi, Freshness-/Konflikt-/Latenzregeln prüfen.
+8. Secret-Referenzen testen; Werte nie anzeigen.
+9. Speicher, Systemzeit, Backupziel prüfen.
+10. Startup-Report vollständig abwarten.
+11. nur bei `HEALTHY` und bestandener Indicator-/Data-Source-/Bastian-Source-Parität Paper-Signale freigeben.
 
 ## Täglicher Betreibercheck
 
 - Modus/Health;
+- finaler Target Stack/Version;
 - letzte erwartete finale Marktdaten;
 - letzte 00:05-UTC-Synchronisation;
+- Indicator Data Source Mapping/Health;
+- aktiver Volume Override/Provider soweit relevant;
+- Footprint-/POC-/Session-Provider soweit signalrelevant;
 - Indicator Health;
 - Source Discovery / Capture / Parser Health;
 - aktuelle/erwartete Source-Sessions und deren Status;
@@ -31,6 +37,19 @@ Status: `VERBINDLICH` für den BTK-Betriebsunterbau; signalaktive Strategie blei
 - P1/P2-Alarme;
 - Scheduler/Speicherplatz;
 - aktive Strategie-/Quellen-/Configversion.
+
+## Indicator-Provider/Mapping stimmt nicht
+
+Wenn Target Stack/Settings zwar stimmen, aber Preis-/Volumen-/Session-/Footprint-Mapping von der eingefrorenen Referenz abweicht:
+
+1. neue signalabhängige Entries pausieren;
+2. keine Ersatzquelle automatisch einsetzen;
+3. Config-/Provider-/Symbol-/Market-Type-/Timezone-Werte mit DMS 03/13 vergleichen;
+4. bei PVSRA insbesondere Volume Override und Volumensymbol prüfen;
+5. bei POC/Footprint prüfen, ob der Wert exakt verfügbar oder nur `BLACK_BOX_EXTERNAL` ist;
+6. Referenz-/Golden-Fall wiederholen;
+7. betroffene Runs bei echter Mappingänderung `STALE`/`INVALID` markieren;
+8. erst nach dokumentierter Parität wieder freigeben.
 
 ## Erkannter Bastian-Livestart
 
@@ -51,16 +70,17 @@ Status: `VERBINDLICH` für den BTK-Betriebsunterbau; signalaktive Strategie blei
 5. Wartung;
 6. `LIVE_DISABLED`/Paper starten;
 7. Startup-Sync/Reconciliation;
-8. Source-Sessions neu erkennen;
-9. Pending Conditions auf Freshness/Expiry/Invalidation prüfen – nicht blind reaktivieren;
-10. Versionen/Config prüfen;
-11. Modus explizit wieder freigeben.
+8. Target Stack und Indicator-Source-Mapping neu laden/prüfen;
+9. Source-Sessions neu erkennen;
+10. Pending Conditions auf Freshness/Expiry/Invalidation prüfen – nicht blind reaktivieren;
+11. Versionen/Config prüfen;
+12. Modus explizit wieder freigeben.
 
-## Marktfeed stale
+## Markt-/Indicator-Feed stale
 
-- ab definierter Stale-Grenze ohne Streamupdate oder überfälliger finaler Bar;
+- ab definierter Stale-Grenze ohne erwartetes Streamupdate oder überfälliger finaler Bar/Indicator-Feed;
 - betroffene Symbole und darauf basierende Pending Conditions pausieren;
-- REST/Provider/Systemzeit prüfen;
+- Provider/Systemzeit/Mapping prüfen;
 - Lücken schließen;
 - Strategie-Zustand aus gültigen Daten rekonstruieren;
 - keine alten Signale nachholen;
@@ -137,11 +157,11 @@ Symbol `HALTED`, Status/Position prüfen, kein automatischer Ersatzcoin, Univers
 
 ## Fehlgeschlagener Datenaudit
 
-Ursache/Coins prüfen, sicheren Audit neu starten, bei Historienänderung Runs stale, Wiederholung eskalieren.
+Ursache/Coins/Indicator-Provider prüfen, sicheren Audit neu starten, bei Historien- oder Source-Mappingänderung Runs stale, Wiederholung eskalieren.
 
 ## Restore
 
-Isoliert, `LIVE_DISABLED`, Backuphash, DB/Config/Artefakte, Secrets separat, Startup-Data-Check, bekannten Backtest/Replay reproduzieren, Source-Allowlist/Sessionzustand prüfen, Reconciliation trocken, Bericht freigeben.
+Isoliert, `LIVE_DISABLED`, Backuphash, DB/Config/Artefakte, Secrets separat, Target Stack/Indicator-Source-Mapping prüfen, Startup-Data-Check, bekannten Backtest/Replay reproduzieren, Source-Allowlist/Sessionzustand prüfen, Reconciliation trocken, Bericht freigeben.
 
 ## Referenzabweichung Originalindikator
 
@@ -149,12 +169,13 @@ Wenn der Bot bei gleichem Symbol/Timeframe/Settings vom Originalindikator abweic
 
 1. keine Strategieänderung aus Performancegründen;
 2. Signal/UTC-Bar/Settings/Quelle sichern;
-3. prüfen, ob Originalsignal intrabar/repaintend war;
-4. Datenprovider-/Zeitzonen-/Timeframe-Abweichung ausschließen;
-5. DMS 03 und Evidence prüfen;
-6. Code oder Spezifikation nur mit dokumentierter Ursache ändern;
-7. alle betroffenen Runs stale/invalid markieren;
-8. Referenztest wiederholen.
+3. Target-Stack-/Indikatorversion prüfen;
+4. prüfen, ob Originalsignal intrabar/repaintend war;
+5. Chartpreis-, Volumen-, Volume-Override-, Market-Type-, Session-/Timezone- und ggf. Footprint-/POC-Abweichung ausschließen;
+6. DMS 03/05/13 und Evidence prüfen;
+7. Code oder Spezifikation nur mit dokumentierter Ursache ändern;
+8. alle betroffenen Runs stale/invalid markieren;
+9. Referenztest wiederholen.
 
 ## Incidentabschluss
 
