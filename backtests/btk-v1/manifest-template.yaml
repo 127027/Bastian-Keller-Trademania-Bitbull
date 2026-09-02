@@ -1,7 +1,8 @@
 schema_version: 1
 backtest_version: btk-v1
 run_id: TO_BE_ASSIGNED
-run_mode: all_ten_isolated  # alternativ: single_symbol oder paper_live_mirror
+run_type: TO_BE_ASSIGNED  # indicator_backtest | source_replay | fusion_replay | paper_live_mirror | reference_comparison
+run_mode: TO_BE_ASSIGNED
 created_at_utc: TO_BE_ASSIGNED
 status: not_run
 
@@ -10,7 +11,8 @@ strategy:
   normative_spec: DMS/03_STRATEGIE_BITBULL_TRADEMANIA_BASTIAN_KELLER.md
   indicator_identity: TO_BE_ASSIGNED
   indicator_source_sha256: null
-  source_evidence_set_id: TO_BE_ASSIGNED
+  settings_sha256: TO_BE_ASSIGNED
+  fusion_model: TO_BE_ASSIGNED
   config_sha256: TO_BE_ASSIGNED
   code_commit: TO_BE_ASSIGNED
 
@@ -22,6 +24,23 @@ data:
   warmup_start_utc: TO_BE_ASSIGNED
   report_start_utc: TO_BE_ASSIGNED
   report_end_utc: TO_BE_ASSIGNED
+
+bastian_sources:
+  evidence_set_id: TO_BE_ASSIGNED
+  source_allowlist_version: TO_BE_ASSIGNED
+  source_rules_version: TO_BE_ASSIGNED
+  capture_version: TO_BE_ASSIGNED
+  parser_version: TO_BE_ASSIGNED
+  validation_version: TO_BE_ASSIGNED
+  session_policy_version: TO_BE_ASSIGNED
+  freshness_policy: TO_BE_ASSIGNED
+  revision_policy: TO_BE_ASSIGNED
+  conflict_policy: TO_BE_ASSIGNED
+  conditional_watcher_version: TO_BE_ASSIGNED
+  source_ids: []
+  session_ids: []
+  evidence_start_utc: TO_BE_ASSIGNED
+  evidence_end_utc: TO_BE_ASSIGNED
 
 capital:
   isolated_starting_usdt_per_symbol: 250.00
@@ -45,14 +64,28 @@ execution:
     total: 40
   bnb_or_vip_discount_assumed: false
 
-bastian_sources:
-  fusion_model: TO_BE_ASSIGNED
-  source_rules_version: TO_BE_ASSIGNED
-  freshness_policy: TO_BE_ASSIGNED
-  evidence_set_id: TO_BE_ASSIGNED
+validation:
+  indicator_parity: TO_BE_ASSIGNED
+  source_parity: TO_BE_ASSIGNED
+  chronological_replay: TO_BE_ASSIGNED
+  pending_condition_revision_tests: TO_BE_ASSIGNED
+
+reference_comparison:
+  enabled: false
+  reference_bot_version: null
+  same_data_snapshot: null
+  same_markets: null
+  same_cost_model: null
+  same_capital_basis: null
+  same_forward_paper_window: null
+  parameter_freeze_verified: null
 
 artifacts:
   data_quality: TO_BE_ASSIGNED
+  indicator_parity: TO_BE_ASSIGNED
   source_replay: TO_BE_ASSIGNED
+  latency_report: TO_BE_ASSIGNED
+  pending_condition_revision_report: TO_BE_ASSIGNED
+  comparison_report: TO_BE_ASSIGNED
   report: TO_BE_ASSIGNED
   trades: TO_BE_ASSIGNED
