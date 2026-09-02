@@ -1,23 +1,25 @@
 # 01 – Produktvision und Scope
 
-Status: `VERBINDLICH` für den technischen Unterbau; Strategiequelle `OFFEN` bis DMS 03 eingefroren ist.
+Status: `VERBINDLICH` für den technischen Unterbau; konkrete Strategiequelle bleibt bis zum DMS-03-Freeze teilweise `OFFEN`.
 
 ## Produktziel
 
-Dieses Repository beschreibt einen eigenständigen **Bastian-Keller-/TradeMania-/Bitbull-Trading-Bot**. Der Bot soll den künftig bereitgestellten Originalindikator deterministisch auswerten, Bastian-Keller-Lives und offizielle Updates nach klaren Regeln als Kontext verarbeiten, historische Daten reproduzierbar backtesten, Paper-/Live-Orders verwalten und sämtliche Entscheidungen auditierbar anzeigen.
+Dieses Repository beschreibt einen eigenständigen **Bastian-Keller-/TradeMania-/Bitbull-Trading-Bot**. Der Bot soll den künftig bereitgestellten Originalindikator deterministisch auswerten und eindeutige, aktuelle Aussagen von Bastian Keller aus freigegebenen offiziellen Live-/Update-Quellen nach genau dokumentierten Regeln in Handelskontext bzw. handelbare Strategieereignisse überführen.
 
-Der technische Unterbau wird nicht unnötig neu erfunden. Bewährte generische Komponenten aus dem bereits existierenden Bot dürfen nach dem Strategie-Freeze gezielt übernommen werden.
+Der technische Unterbau wird nicht unnötig neu erfunden. Bewährte generische Komponenten dürfen gezielt wiederverwendet werden, wenn sie strategiespezifisch neutral sind. Die neue Source-/Live-Schicht wird nur dort ergänzt, wo der bestehende Unterbau diese Verantwortung noch nicht besitzt.
 
 ## Erfolgsbild
 
 Ein fachkundiger Dritter kann später:
 
-- erklären, wann Indikator oder Bastian-Quelle ein handelbares Signal erzeugt;
+- erklären, wann der Originalindikator ein Signal erzeugt;
+- erklären, wann eine Bastian-Aussage nur Kontext, eine Pending Condition oder ein handelbares Signal ist;
+- nachvollziehen, wie Live/Replay, Sprecher, Asset, Bedingung, Freshness, Revision und Latenz geprüft wurden;
 - Botreaktionen mit Originalindikator und gelabelten Referenz-Lives vergleichen;
-- denselben Backtest reproduzieren;
-- jede Order auf Signal, Quelle, Zeit, Konfiguration und Bot-Version zurückführen;
-- Daten-/Source-Ausfälle erkennen;
-- nach Neustart ohne Doppelorder fortsetzen;
+- denselben Indicator-Backtest und denselben Source-Replay reproduzieren;
+- jede Order auf Signal, Source-Event, Zeit, Fusion, Risk-/Capital-Gate, Konfiguration und Bot-Version zurückführen;
+- Daten-/Source-/Capture-/Parser-Ausfälle erkennen;
+- nach Neustart ohne Doppelorder und ohne blind reaktivierte alte Pending Conditions fortsetzen;
 - nachvollziehen, warum eine Order ausgeführt, blockiert oder verworfen wurde.
 
 ## Enthalten
@@ -25,18 +27,26 @@ Ein fachkundiger Dritter kann später:
 - zehn Binance-Spot-Paare gegen USDT: BTC, ETH, BNB, SOL, XRP, ADA, LINK, AVAX, DOT, DOGE;
 - Paper/Live-Baseline 240 USDT gemeinsamer Cashpool, drei Slots à 80 USDT;
 - Backtest-Baseline zehn isolierte Tests à 250 USDT sowie Einzeltest à 250 USDT;
-- mindestens drei vollständige Jahre historische Daten plus Warm-up;
+- mindestens drei vollständige Jahre Marktdaten plus Warm-up für den reproduzierbaren Indicator-/Marktpfad;
+- Bastian-Source-Replay ausschließlich für tatsächlich vorhandene, zeitlich belastbare Evidence;
 - Startup-/Datenprüfung und täglicher Audit;
 - UI-Zeiträume Heute, 1W, 1M, 1J, 3J;
-- Paper als Pflichtstufe vor Live;
+- 24/7-Paper als Pflichtstufe vor Live;
 - Audit, Metriken, Alerts, Backup und Recovery;
 - Originalindikator als technische Strategiequelle;
 - Bastian Keller als primäre menschliche Strategiequelle;
-- 24/7-Quellenmonitoring, ohne alte Inhalte zeitlich unbegrenzt weiterwirken zu lassen.
+- Source-Allowlist und dynamische Live-/Update-Erkennung;
+- technisch/rechtlich zulässigen Capture-Pfad je Quelle;
+- Speaker-/Asset-/Statement-Validierung;
+- Freshness, Revision/Supersede und Konfliktbehandlung;
+- `PENDING_CONDITION` für konditionale Aussagen;
+- genau ein später eingefrorenes Fusionsmodell zwischen Indikator und Bastian-Kontext;
+- Messung von Source-, Capture-, Parser- und End-to-End-Latenz;
+- späteren fairen Vergleich mit dem separat betriebenen Referenzbot.
 
 ## Noch offen
 
-Bis Originalindikator und rechtmäßig zugängliche Member-/Live-Quellen vorliegen, bleiben offen:
+Bis Originalindikator und rechtmäßig zugängliche Member-/Live-Quellen vorliegen, bleiben insbesondere offen:
 
 - exakter Indikatorname, Version, Publisher und Inputs;
 - Signal-Timeframe/Multi-Timeframe-Verhalten;
@@ -46,33 +56,47 @@ Bis Originalindikator und rechtmäßig zugängliche Member-/Live-Quellen vorlieg
 - Alerts und Overlays;
 - Entry-/Exit-/Reentry-/TP-/SL-/Trailing-Regeln;
 - Slotpriorisierung;
-- ob Bastian selbst Entries auslösen darf oder nur bestätigt/blockiert;
-- Freshness und Quellenpriorität bei Konflikten.
+- exakte offizielle Source-/Channel-IDs;
+- Capture-Methode je Quelle;
+- Mindestqualität/Pflichtfelder für Capture und Parser;
+- Sprechererkennung in Multi-Person-Lives;
+- ob Bastian selbst Entries auslösen darf oder nur bestätigt/blockiert/managt;
+- Regeln für konditionale Aussagen;
+- Freshness, Revision, Source-Priorität und Konflikte;
+- maximal zulässige Reaktionslatenz;
+- Verhalten bei Streamende/Source-Ausfall;
+- genaues Fusionsmodell.
 
 ## Nicht enthalten
 
 - erfundene Indikatorlogik;
+- erfundene oder aus dem Kontext gerissene Bastian-Aussagen;
 - Gewinn- oder Renditeversprechen;
 - Futures, Margin, Leverage oder Short ohne neue Freigabe;
 - Martingale/Grid/DCA/Pyramiding ohne belegte Strategieanforderung;
 - automatisches Folgen beliebiger Mentoren oder Community-Mitglieder;
+- Drittzusammenfassungen als Ersatz für ausgefallene Bastian-Quellen;
 - Umgehung von Plattformzugriffen, Bezahlschranken oder Schutzmaßnahmen;
 - API-Schlüssel mit Auszahlungsrecht.
 
 ## Betriebsmodi
 
 1. `BACKTEST`
-2. `PAPER`
-3. `LIVE_DISABLED`
-4. `LIVE`
+2. `SOURCE_REPLAY`
+3. `PAPER`
+4. `LIVE_DISABLED`
+5. `LIVE`
 
 Sicherer Standard nach Installation, Restore oder ungeklärter Synchronisation ist `LIVE_DISABLED`.
 
-## Vier Signalebenen
+## Strategieebenen
 
 - `INDICATOR_SIGNAL`: technischer Originalindikatorzustand;
-- `BASTIAN_CONTEXT`: Marktmeinung/Szenario ohne unmittelbaren Auftrag;
-- `BASTIAN_ACTIONABLE_SIGNAL`: eindeutig strukturierte, aktuelle Entry-/Exit-/Manage-Aussage;
-- `EXECUTION_INTENT`: erst nach Risk-, Kapital-, Freshness- und Plausibilitätsprüfung.
+- `BASTIAN_STATEMENT`: strukturierte Aussage, noch nicht automatisch handelbar;
+- `BASTIAN_CONTEXT`: gültiger Markt-/Szenariokontext;
+- `PENDING_CONDITION`: konditionale Aussage, die auf bestätigte Marktbedingung wartet;
+- `BASTIAN_ACTIONABLE_SIGNAL`: nach DMS 03 validierte, ausreichend eindeutige und frische Aussage;
+- `STRATEGY_DECISION`: Ergebnis des eingefrorenen Fusionsmodells;
+- `EXECUTION_INTENT`: erst nach Risk-, Kapital-, Exchange-, Freshness- und Health-Prüfung.
 
-24/7 bedeutet kontinuierliche Markt- und Quellenüberwachung, nicht permanente Handelstätigkeit.
+24/7 bedeutet kontinuierliche Markt-, Indikator- und Quellenüberwachung, nicht permanente Handelstätigkeit.
