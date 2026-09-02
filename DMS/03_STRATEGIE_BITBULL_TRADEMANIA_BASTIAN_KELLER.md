@@ -10,7 +10,7 @@ Dieses Dokument wird die **einzige normative technische Referenz** für die BTK-
 
 Keine Strategie aus einem anderen Projekt darf als Ersatz dienen.
 
-## A – Originalindikator aufnehmen
+# A – Originalindikator aufnehmen
 
 Nach Registrierung werden, soweit rechtmäßig zugänglich, dokumentiert:
 
@@ -25,7 +25,7 @@ Nach Registrierung werden, soweit rechtmäßig zugänglich, dokumentiert:
 9. bei rechtmäßig einsehbarem Source: Hash, Version und private/rechtekonforme Ablage;
 10. zugehörige offizielle Schulungs-/Live-Aussagen mit Datum und Kontext.
 
-### Identität
+## Identität
 
 | Feld | Wert |
 |---|---|
@@ -38,11 +38,11 @@ Nach Registrierung werden, soweit rechtmäßig zugänglich, dokumentiert:
 | Strategieversion | `BTK-INDICATOR-SPEC-1.0` erst nach Freeze |
 | Repainting-Status | UNKNOWN |
 
-### Inputs
+## Inputs
 
 Jeder sichtbare Input wird mit Typ, Default, Einheit, erlaubten Werten und Signalrelevanz erfasst. Es werden **keine** Defaults aus ähnlichen Indikatoren übernommen.
 
-## B – Timeframe, Daten und Repainting
+# B – Timeframe, Daten und Repainting
 
 Vor Implementierung muss geklärt sein:
 
@@ -59,7 +59,7 @@ Vor Implementierung muss geklärt sein:
 
 Bis zum Abschluss gilt: `trade_on_open_bar=FORBIDDEN`, sofern nicht ausdrücklich anders belegt.
 
-## C – Signal- und Positionsabbildung
+# C – Signal- und Positionsabbildung
 
 Die Tabelle wird erst anhand des echten Indikators geschlossen:
 
@@ -83,11 +83,11 @@ Explizit zu klären:
 - Nachholen verpasster Signale;
 - Neustart mitten in einem Trend.
 
-## D – Simultane Signale und drei Slots
+# D – Simultane Signale und drei Slots
 
-Wenn mehr als drei gültige Entries gleichzeitig vorliegen, braucht V1 eine deterministische Priorität. Zulässige Quellen sind z. B. ein Indikator-Score, definierte Signalstärke oder eine vor dem Backtest festgelegte neutrale Regel. Fremde Priorisierungsregeln werden nicht ungeprüft übernommen.
+Wenn mehr als drei gültige Entries gleichzeitig vorliegen, braucht V1 eine deterministische Priorität. Zulässige Quellen sind z. B. ein Indikator-Score, definierte Signalstärke, explizite Bastian-Priorität oder eine vor dem Backtest festgelegte neutrale Regel. Keine fremde Priorisierungslogik wird ungeprüft übernommen.
 
-## E – Golden-/Referenzverfahren
+# E – Golden-/Referenzverfahren
 
 Je Referenzbar werden mindestens gespeichert:
 
@@ -100,7 +100,7 @@ Je Referenzbar werden mindestens gespeichert:
 - Screenshot-/Export-/Source-Referenz;
 - Bot-Sollzustand.
 
-Ziel ist eine ausreichend starke, reproduzierbare Paritätsbasis, vorzugsweise mindestens 1.000 aufeinanderfolgende Bars je Referenzmarkt.
+Ziel ist eine ausreichend starke, reproduzierbare Paritätsbasis, vorzugsweise mindestens 1.000 aufeinanderfolgende Bars je Referenzmarkt, soweit die Indikatorplattform dies praktisch erlaubt.
 
 # F – Bastian-Keller-Live-/Content-Schicht
 
@@ -111,16 +111,42 @@ Ziel ist eine ausreichend starke, reproduzierbare Paritätsbasis, vorzugsweise m
 | `BTK_INDICATOR` | Originalindikator | erst nach Freeze |
 | `BASTIAN_YOUTUBE_LIVE` | aktuelle Live-Aussage von Bastian | nur validiert |
 | `BASTIAN_YOUTUBE_UPDATE` | veröffentlichtes Marktupdate | nur innerhalb Freshness |
-| `BASTIAN_TELEGRAM` | offizieller Kanal/Ankündigung/Markthinweis | nur nach Regel |
-| `TRADEMANIA_MEMBER_CONTENT_BASTIAN` | rechtmäßig zugänglicher Bastian-Inhalt | nur nach Regel |
+| `BASTIAN_TELEGRAM` | offizieller Kanal/Ankündigung/Markthinweis | nur nach eingefrorener Regel |
+| `TRADEMANIA_MEMBER_CONTENT_BASTIAN` | rechtmäßig zugänglicher Bastian-Inhalt | nur nach eingefrorener Regel |
 | `TRADEMANIA_OTHER_MENTOR` | anderer Mentor | nein, bis ausdrücklich freigegeben |
+
+## Session-Lifecycle
+
+Jede überwachte Quelle/Sendung hat mindestens einen der Zustände:
+
+`SCHEDULED -> LIVE -> ENDED -> REPLAY`
+
+Zusätzlich möglich: `STALE`, `UNAVAILABLE`, `UNKNOWN`.
+
+Ein öffentlich beobachtetes Wochen-/Uhrzeitmuster ist **kein harter Strategiezeitplan**. Offizielle Ankündigungen und tatsächlicher Live-Status werden dynamisch erkannt, soweit die jeweilige Plattform dies technisch/rechtlich zulässt.
+
+## Capture-Pfad
+
+Für jede Quellenklasse wird vor signalaktivem Betrieb explizit dokumentiert:
+
+- welche offizielle URL/ID allowgelistet ist;
+- wie Live/Replay erkannt wird;
+- welche Erfassungsmethode zulässig ist;
+- ob offizielle Untertitel/Transkripte/Metadaten/API verfügbar sind;
+- ob eine lokale Speech-to-Text-Verarbeitung überhaupt erforderlich und zulässig ist;
+- erwartete Capture-Latenz und Ausfallverhalten;
+- wie Content-Hash/private Referenz erzeugt wird.
+
+Der Bot darf keine Bezahlschranke, Zugriffskontrolle oder technische Schutzmaßnahme umgehen.
 
 ## Struktur eines Bastian-Ereignisses
 
 ```text
 source_event_id
+session_id
 origin
 source_url_or_private_ref
+session_state
 published_at_utc
 received_at_utc
 spoken_at_utc_or_offset
@@ -130,15 +156,35 @@ statement_class = CONTEXT | WATCH | ENTRY | EXIT | REDUCE | INVALIDATION | TARGE
 side = LONG | SHORT | FLAT | UNKNOWN
 price_or_zone
 condition
+condition_state = NONE | PENDING | MET | INVALIDATED | EXPIRED
 horizon
 freshness_deadline
-confidence
+capture_confidence
+parser_confidence
 content_hash_or_private_ref
 derived_summary
 decision_rule_version
+supersedes_event_id
 ```
 
 Rohtranskripte und geschützte Schulungsinhalte bleiben außerhalb des öffentlichen Repositories.
+
+## Verbindliche Echtzeit-Reaktionspipeline
+
+Nach Freeze läuft eine neue Bastian-Aussage nur über diese Kette:
+
+1. **Source Discovery:** allowgelistete offizielle Quelle bzw. Session erkennen.
+2. **Session Validation:** `LIVE`, `UPDATE`, `REPLAY` und Zeitkontext feststellen.
+3. **Capture:** Inhalt über den dokumentierten zulässigen Weg erfassen.
+4. **Speaker Validation:** Bastian Keller als Sprecher bestätigen.
+5. **Segmentation:** relevante Aussage zeitlich isolieren; Zuschauer-/Mentorensätze trennen.
+6. **Structuring:** Asset, Aussageklasse, Aktion/Richtung, Preis/Zone, Bedingung, Horizont extrahieren.
+7. **Validation:** Pflichtfelder, Unsicherheit, Freshness, Revisionen und Konflikte prüfen.
+8. **Conditional Watch:** bei „wenn X, dann Y“ zunächst `PENDING_CONDITION`; Marktbedingung separat beobachten.
+9. **Fusion:** eingefrorene Beziehung zwischen Bastian und Indikator anwenden.
+10. **Risk/Capital/Exchange Guard:** Kapital, Slots, Börsenfilter, Preisabweichung und Systemhealth prüfen.
+11. **Execution Intent:** erst jetzt darf ein Order-Intent entstehen.
+12. **Audit:** Rohreferenz, strukturierte Aussage, Entscheidung, Blockgrund, Latenzen und Orderbezug speichern.
 
 ## Wann eine Aussage NICHT gehandelt wird
 
@@ -149,9 +195,14 @@ Keine automatische Order bei:
 - Zuschauerfrage;
 - Kommentar über fremden Trade/anderen Mentor;
 - bloßer Watch-Zone;
-- mehreren Alternativen ohne Priorität;
+- mehreren Alternativen ohne eindeutige Priorität;
 - Aussage, die später im selben Stream revidiert wurde;
-- verspätetem Replay ohne aktuelle Gültigkeit.
+- verspätetem Replay ohne aktuelle Gültigkeit;
+- unklarem Asset;
+- unklarer Aktion;
+- kritisch unsicherem Capture/Transkript/Parser-Ergebnis;
+- Source-Ausfall oder Sprecherunsicherheit;
+- fehlender Freshness-/Konfliktregel.
 
 ## `BASTIAN_ACTIONABLE_SIGNAL`
 
@@ -162,9 +213,46 @@ Ein Bastian-Signal benötigt mindestens:
 3. eindeutige Aktion oder deterministisch prüfbare Bedingung;
 4. gültigen Zeitkontext/Freshness;
 5. keine aktuellere widersprechende Aussage;
-6. bestandene Risiko-, Kapital-, Exchange- und Source-Health-Guards.
+6. gültigen Session-/Source-Status;
+7. bestandene Capture-/Parser-Validierung;
+8. bestandene Risiko-, Kapital-, Exchange- und Source-Health-Guards.
 
-## G – Indikator + Bastian: Fusionsmodell
+Ein Rohtranskript, eine automatische Zusammenfassung oder ein einzelner Confidence-Wert ist **nie allein** ein handelbares Signal.
+
+# G – Konditionale Aussagen
+
+Aussagen wie „wenn ETH über X kommt, dann Long“ erzeugen **keine sofortige Order**. Sie werden als versionierte `PENDING_CONDITION` gespeichert.
+
+Vor Auslösung müssen definiert und erfüllt sein:
+
+- Asset;
+- Bedingung und Operator;
+- Preis/Zone/Timeframe soweit erforderlich;
+- Aktion nach Bedingung;
+- Freshness/Expiry;
+- Invalidation;
+- Marktfeed-Quelle;
+- Konfliktfreiheit mit neueren Bastian-Aussagen;
+- Fusionsregel mit dem Indikator.
+
+Nach Expiry oder Invalidation wird die Regel nicht reaktiviert, außer ein neues Source-Ereignis erzeugt sie erneut.
+
+# H – Revisionen und Meinungswechsel
+
+Eine spätere Aussage überschreibt die Historie nicht. Sie erzeugt ein neues Source-Ereignis mit `supersedes_event_id` oder einer anderen eingefrorenen Konfliktbeziehung.
+
+Zu prüfen sind insbesondere:
+
+- „Setup ist invalidiert“;
+- „ich bin doch nicht mehr bullish/bearish“;
+- neue Entry-Zone;
+- Stop/Target wird verschoben;
+- Teilgewinn/Positionsreduktion;
+- Wechsel von Intraday- zu Swing-Horizont.
+
+Nur die nach DMS 03 gültige aktuelle Kontextversion darf neue Entscheidungen beeinflussen.
+
+# I – Indikator + Bastian: Fusionsmodell
 
 Die endgültige Priorität wird erst nach echten Beispielen eingefroren. Zu prüfen sind:
 
@@ -173,22 +261,29 @@ Die endgültige Priorität wird erst nach echten Beispielen eingefroren. Zu prü
 - `DUAL_CONFIRMATION`: Entry nur bei Übereinstimmung;
 - `SOURCE_SPECIFIC`: Bastian darf nur bestimmte Aktionen überschreiben.
 
-Genau **ein** Modell wird nach Replay/Paper-Vergleich für V1 freigegeben.
+Genau **ein** Modell wird für V1 freigegeben. Die Auswahl erfolgt nicht nur nach höchstem historischen PnL, sondern nach Referenztreue, Robustheit und Forward-Paper-Verhalten.
 
-## H – Freshness und Konflikte
+# J – Freshness, Konflikte und Latenz
 
 Jeder Bastian-Kontext erhält eine explizite Lebensdauer. Bis echte Beispiele ausgewertet sind, bleibt `freshness_deadline=OFFEN`; alte Aussagen dürfen nicht still weiterwirken.
 
-Bei Konflikten wird nach einer noch festzulegenden Quellenpriorität und Aktualität entschieden. Die Regel muss deterministisch sein und im Audit protokolliert werden.
+Für jede Quellenklasse werden vor signalaktivem Paper/Live festgelegt:
 
-## I – Reaktionszeit
+- Source-Priorität;
+- maximale Source-/Capture-/Parser-/End-to-End-Latenz;
+- Freshness-Regel;
+- Verhalten bei Sessionende;
+- Verhalten bei Source-Ausfall;
+- Verhalten bei verspäteter Zustellung;
+- Konfliktregel mit neueren Aussagen und dem Indikator.
 
-Der Bot soll offizielle Live-/Update-Inhalte so zeitnah wie technisch und rechtlich möglich erkennen. Die maximal zulässige End-to-End-Latenz wird nach Prüfung der verfügbaren Schnittstellen, Untertitel und Content-Typen festgelegt. Keine Umgehung von Zugriffsschutz wird vorausgesetzt.
+Die Latenz wird pro Event gemessen. Ein wirtschaftlich veralteter Entry darf trotz formal korrekter Aussage blockiert werden.
 
-## J – Paper-/Replay-Pflicht für Bastian-Inhalte
+# K – Paper-/Replay-Pflicht für Bastian-Inhalte
 
 Vor Live müssen mindestens getestet werden:
 
+- Live-Start und Streamende;
 - expliziter Entry;
 - konditionaler Entry;
 - expliziter Exit;
@@ -198,10 +293,14 @@ Vor Live müssen mindestens getestet werden:
 - Meinungswechsel im Live;
 - mehrere Coins nacheinander;
 - Aussage ohne Preisangabe;
+- Zuschauerfrage/anderer Mentor;
+- falsches oder unvollständiges Transkript;
 - verspätetes Video/Replay;
-- widersprüchliche Quellen.
+- Source-Abbruch und Reconnect;
+- widersprüchliche Quellen;
+- Expiry einer Pending Condition.
 
-## Freeze-Kriterien für `BTK-INDICATOR-SPEC-1.0`
+# Freeze-Kriterien für `BTK-INDICATOR-SPEC-1.0`
 
 Freeze erst wenn:
 
@@ -213,8 +312,12 @@ Freeze erst wenn:
 - Slotpriorität geklärt;
 - Referenzfälle reproduzierbar;
 - Bastian-Quellen und Speaker-Regel definiert;
-- Freshness/Konfliktregel definiert;
+- Capture-Pfad je signalrelevanter Quelle dokumentiert;
+- Session-Lifecycle definiert;
+- Freshness/Konflikt-/Revisionsregel definiert;
+- Conditional-Watcher-Regeln definiert;
+- maximal zulässige Latenzen festgelegt;
 - genau ein Fusionsmodell freigegeben;
 - keine kritische Strategiefrage mehr `OFFEN` ist.
 
-Erst danach darf Strategiecode umgesetzt werden.
+Erst danach darf signalaktiver Strategiecode umgesetzt werden.
