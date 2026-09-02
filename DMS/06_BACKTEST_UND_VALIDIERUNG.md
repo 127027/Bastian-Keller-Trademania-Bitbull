@@ -75,3 +75,21 @@ Net PnL, Rendite, Max Drawdown, Tradezahl, Winrate, Profit Factor soweit stabil,
 ## Gültiger Lauf
 
 Nur gültig, wenn Datenqualität, Strategieversion, Config, Kostenmodell, Hashes, Source-/Signalparität und Artefakte vollständig nachvollziehbar sind.
+
+## Fairer späterer Bot-gegen-Bot-Vergleich
+
+Die BTK-Variante wird später gegen den separat betriebenen Referenzbot unter **identischen äußeren Bedingungen** verglichen. Der Vergleich darf nicht dadurch verzerrt werden, dass ein Bot bessere Daten, niedrigere Kostenannahmen oder einen günstigeren Zeitraum erhält.
+
+Verbindlich identisch, soweit fachlich möglich:
+
+- dieselben zehn Märkte;
+- derselbe historische Daten-Snapshot und dieselben Berichtsgrenzen;
+- dieselbe Gebühren-, Spread- und Slippage-Baseline;
+- dieselbe Startkapital-/Slotbasis im jeweiligen Vergleichsmodus;
+- dieselben Exchange-Filter und Rundungsregeln;
+- derselbe Forward-Paper-Zeitraum;
+- keine nachträgliche Parameteränderung während des Vergleichs.
+
+Verglichen werden mindestens Netto-PnL und Netto-PnL/Tag, Max Drawdown, Profit Factor soweit stabil, Tradezahl, Exposure, Gesamtkosten, Kapitalnutzung, Anzahl blockierter/ausgelassener Signale, technische Ausfälle und Reproduzierbarkeit.
+
+**Gewinner ist nicht automatisch der Bot mit dem höchsten Bruttogewinn.** Die Entscheidung berücksichtigt Nettoperformance, Risiko, Stabilität und operativen Aufwand. Beide vollständigen Ergebnisberichte bleiben erhalten; kein schlechterer Lauf wird gelöscht oder durch einen günstigeren Zeitraum ersetzt.
