@@ -16,6 +16,17 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-SRC-002 | Live-/Update-Aussagen werden erst nach Strukturierung und Freshness-Prüfung handelbar. | VERBINDLICH |
 | BTK-SRC-003 | Replay, alte Videos, Zuschauerfragen und historische Beschreibungen dürfen nicht als aktuelle Orders missverstanden werden. | VERBINDLICH |
 | BTK-SRC-004 | Geschützte Rohtranskripte/Memberinhalte werden nicht öffentlich committed. | VERBINDLICH |
+| BTK-SRC-005 | Jedes Content-Ereignis speichert Origin, Source-ID/URL oder private Referenz, Published-/Received-/Spoken-Time, Sprecher, Live/Replay, Hash und Parsingstatus. | VERBINDLICH |
+| BTK-SRC-006 | Nur explizit allowgelistete offizielle Quellen dürfen den Bastian-Layer speisen; Termin-/Livestream-Erkennung erfolgt dynamisch und nicht über einen dauerhaft hart codierten Marketingkalender. | VERBINDLICH |
+| BTK-SRC-007 | Für jede Quelle wird der technisch und rechtlich zulässige Capture-Pfad dokumentiert, z. B. offizielle Metadaten, Untertitel, Transkript/API oder andere freigegebene Methode. | OFFEN |
+| BTK-SRC-008 | Rohtext, Speech-to-Text, NLP-/Parser-Zusammenfassung oder Confidence-Wert ist niemals allein orderautorisierend; ein `BASTIAN_ACTIONABLE_SIGNAL` benötigt die Pflichtfelder aus DMS 03. | VERBINDLICH |
+| BTK-SRC-009 | Bei mehrdeutiger, unvollständiger, widersprüchlicher oder kritisch unsicherer Erfassung wird keine neue Order aus diesem Source-Ereignis erzeugt. | VERBINDLICH |
+| BTK-SRC-010 | Konditionale Aussagen werden als wartende Regel gespeichert und dürfen erst auslösen, wenn Bedingung, Asset, Gültigkeit und Marktbeobachtung deterministisch bestätigt sind. | VERBINDLICH |
+| BTK-SRC-011 | Eine neuere eindeutige Revision/Invalidierung darf älteren Bastian-Kontext gemäß eingefrorener Konfliktregel ersetzen; Historie wird nicht überschrieben. | VERBINDLICH |
+| BTK-SRC-012 | Source-Health, Capture-Latenz, Parser-Latenz und End-to-End-Reaktionslatenz werden gemessen und auditierbar gespeichert. | VERBINDLICH |
+| BTK-SRC-013 | Maximal zulässige Latenz, Freshness und Source-Priorität werden vor signalaktivem Paper/Live je Quellenklasse festgelegt. | OFFEN |
+| BTK-SRC-014 | Stream-/Session-Lifecycle unterscheidet mindestens `SCHEDULED`, `LIVE`, `ENDED`, `REPLAY`, `STALE`, `UNAVAILABLE`. | VERBINDLICH |
+| BTK-SRC-015 | Bei Source-Ausfall, Capture-Ausfall oder unklarer Sprechererkennung wird nicht auf Drittzusammenfassungen oder geratenen Inhalt ausgewichen. | VERBINDLICH |
 
 ## Märkte, Kapital und Risiko
 
@@ -42,20 +53,22 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-DAT-004 | Täglicher Vollaudit um 00:05 UTC. | VERBINDLICH |
 | BTK-DAT-005 | Stream mit REST-Fallback; provisorische Bars bleiben markiert. | VERBINDLICH |
 | BTK-DAT-006 | Ob offene Bars signalrelevant sind, entscheidet ausschließlich DMS 03. | OFFEN |
-| BTK-SRC-005 | Content-Ereignisse speichern Origin, Published-/Received-Time, Sprecher, Live/Replay, Hash und Parsingstatus. | VERBINDLICH |
 
-## Backtest
+## Backtest, Replay und Vergleich
 
 | ID | Anforderung | Status |
 |---|---|---|
-| BTK-BKT-001 | Primärbericht: drei vollständige Jahre je Paar plus Warm-up. | VERBINDLICH |
+| BTK-BKT-001 | Primärbericht: drei vollständige Jahre je Paar plus Warm-up, soweit die eingefrorene Indikatorstrategie historische Reproduktion erlaubt. | VERBINDLICH |
 | BTK-BKT-002 | Standard-Batch: 10 isolierte Coin-Tests mit je 250 USDT. | VERBINDLICH |
 | BTK-BKT-003 | Einzelmodus: frei wählbares Paar mit 250 USDT. | VERBINDLICH |
 | BTK-BKT-004 | Optionaler Portfolio-Spiegel: 240 USDT, 3×80 Slots. | VERBINDLICH |
 | BTK-BKT-005 | Kostenbaseline je Seite: 10 bp Fee + 2 bp Spread + 3 bp Slippage; Stress: 10+10+20. | VERBINDLICH |
 | BTK-BKT-006 | Kein Look-ahead, Survivorship-Bias oder synthetisches Preisauffüllen. | VERBINDLICH |
 | BTK-BKT-007 | Jeder Run erzeugt Manifest, Datenqualitätsbericht und vollständige Trade-Liste. | VERBINDLICH |
-| BTK-BKT-008 | Indicator-only, Bastian-only soweit sinnvoll und Fusionsmodell werden getrennt ausgewiesen. | NACHWEIS AUSSTEHEND |
+| BTK-BKT-008 | Indicator-only, Bastian-only soweit fachlich reproduzierbar und Fusionsmodell werden getrennt ausgewiesen. | NACHWEIS AUSSTEHEND |
+| BTK-BKT-009 | Bastian-Source-Replay muss Published-/Received-/Spoken-Time, Revisionen, Sessionstatus und Freshness chronologisch respektieren. | NACHWEIS AUSSTEHEND |
+| BTK-BKT-010 | Der spätere Botvergleich verwendet denselben Daten-Snapshot, dieselben Märkte, Kosten, Kapitalregeln und denselben Forward-Paper-Zeitraum. | VERBINDLICH |
+| BTK-BKT-011 | Vergleichsmetriken enthalten mindestens Netto-PnL, Netto-PnL/Tag, Drawdown, Profit Factor soweit stabil, Kosten, Kapitalnutzung, technische Ausfälle und Source-/Execution-Latenz. | VERBINDLICH |
 
 ## Execution
 
@@ -67,6 +80,7 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-EXE-004 | Teilfill, Reject, Timeout, Rate-Limit und Netzwerkfehler werden explizit behandelt. | VERBINDLICH |
 | BTK-EXE-005 | Marktorder ist V1-Baseline, sofern DMS 03 nichts anderes zwingend verlangt. | ANNAHME |
 | BTK-EXE-006 | Nach 10 s unklarem Submit -> `UNKNOWN`, nicht blind erneut senden. | VERBINDLICH |
+| BTK-EXE-007 | Ein Bastian-Source-Ereignis kann erst nach vollständiger Source-/Fusion-/Risk-/Capital-Prüfung ein `EXECUTION_INTENT` erzeugen. | VERBINDLICH |
 
 ## Betrieb und Freigabe
 
@@ -77,7 +91,8 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | BTK-OPS-003 | P1/P2-Alerts gehen an Telegram; Ausfall kritischer Alarmierung pausiert neue Live-Entries. | VERBINDLICH |
 | BTK-OPS-004 | Backup/Restore, Not-Aus, Daten- und Source-Health müssen vor Live getestet sein. | VERBINDLICH |
 | BTK-OPS-005 | Live wird niemals allein durch einen positiven Backtest aktiviert. | VERBINDLICH |
+| BTK-OPS-006 | 24/7-Betrieb überwacht unabhängig voneinander Marktfeed, Indicator Engine, Source Discovery, Source Capture, Parser/Validator, Conditional Watcher, Fusion, Execution und Alarmierung. | VERBINDLICH |
 
 ## UI
 
-UI zeigt mindestens Modus, Health, Datenfrische, Source-Health, aktuelle Bastian-Kontexte, Indikatorversion, offene Positionen, Equity/PnL, blockierte Signale und Chartbereiche Heute/1W/1M/1J/3J.
+UI zeigt mindestens Modus, Health, Datenfrische, Source-Health je Quelle, Sessionstatus, Capture-/Parserstatus, aktuelle Bastian-Kontexte, Pending Conditions, Freshness/Expiry, Indikatorversion, offene Positionen, Equity/PnL, blockierte Signale und Chartbereiche Heute/1W/1M/1J/3J.
