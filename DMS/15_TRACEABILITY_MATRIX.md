@@ -8,10 +8,11 @@ Diese Matrix verhindert, dass Anforderungen nur im Text existieren. Sie ist auf 
 |---|---|---|---|
 | BTK-STR-001 nur eingefrorene BTK-Strategie | DMS 03 | Strategy/Fusion Engine | Freigabegate + Negativtest |
 | BTK-STR-002 nichts erfinden | DMS 00/03 | DMS/Engineering | Quellenreview |
-| BTK-STR-003 Identität/Inputs/Timeframe/Signale | DMS 03 | Config/Indicator/UI | Quelleninventar + Golden-Fälle |
+| BTK-STR-003 finaler Stack/Identität/Inputs/Timeframe/Signale | DMS 03/22 | Config/Indicator/UI | Quelleninventar + Golden-Fälle |
 | BTK-STR-004 Bar-Close/Repainting | DMS 03 | Indicator/Data | Open-Bar/Reload-Test |
 | BTK-STR-005 Entscheidungs-Audit | DMS 02/09 | Decision Store/UI | Persistenz-/Drill-down-Test |
 | BTK-STR-006 Indicator-Parität | DMS 03/12 | Testartefakt | Golden-/Black-Box-Abweichungsreport |
+| BTK-STR-007 Kandidateninventar + minimaler Zielstack | DMS 00/03/14/16/22 | DMS/Config/Strategy | Kandidatenreview + Auswahlprotokoll |
 | BTK-SRC-001 Bastian primäre Person | DMS 00/03 | Source Validator | Sprecher-/Mentor-Negativtest |
 | BTK-SRC-002 Struktur + Freshness vor Handel | DMS 03 | Event Validator | Actionable-/Freshness-Test |
 | BTK-SRC-003 Replay/alt/Frage nicht live | DMS 03 | Session/Event Validator | Replay-/Frage-Negativtest |
@@ -53,6 +54,8 @@ Diese Matrix verhindert, dass Anforderungen nur im Text existieren. Sie ist auf 
 | BTK-DAT-004 00:05-UTC-Audit | DMS 05/10 | Scheduler | Scheduler-Test |
 | BTK-DAT-005 Stream + REST-Fallback | DMS 05 | Data Adapter | Disconnect/Recovery |
 | BTK-DAT-006 offene Bars nur nach DMS 03 | DMS 03/05 | Data/Strategy/UI | Open-Bar-Test |
+| BTK-DAT-007 getrennte Preis-/Volumen-/Session-/Footprint-/POC-Quellen | DMS 03/05/13 | Indicator Data Adapter | Provider-/Timezone-/Footprint-Parity-Test |
+| BTK-DAT-008 identisches Source-Mapping in Referenz/Backtest/Paper/Live | DMS 05/12/13 | Data/Indicator/Manifest | Mapping-Hash-/Cross-Exchange-Override-Test |
 
 ## Backtest, Replay und Vergleich
 
@@ -69,6 +72,7 @@ Diese Matrix verhindert, dass Anforderungen nur im Text existieren. Sie ist auf 
 | BTK-BKT-009 chronologischer Source-Replay | DMS 03/06 | Replay Engine | Zeit-/Revisionstest |
 | BTK-BKT-010 fairer Botvergleich gleiche Basis | DMS 06/12/14 | Comparison Report | Baseline-Hash-Prüfung |
 | BTK-BKT-011 Vergleichsmetriken vollständig | DMS 06/12/18 | Report/UI | Metriktests |
+| BTK-BKT-012 Kandidatenauswahl nicht nach historischem PnL allein | DMS 03/12/14/16 | Selection Review | Pre-Freeze-Auswahl + Forward-Paper-Nachweis |
 
 ## Execution und Betrieb
 
@@ -90,4 +94,4 @@ Diese Matrix verhindert, dass Anforderungen nur im Text existieren. Sie ist auf 
 
 ## Pflege
 
-Neue kritische Anforderungen erhalten positive und negative Tests. `OFFEN` darf nicht durch grüne Implementierungstests kaschiert werden. Vor dem signalaktiven Codeumbau müssen alle Strategie-/Source-Punkte geschlossen sein, die Handelsentscheidung, Freshness, Capture, Revision, Latenz oder Fusionslogik beeinflussen.
+Neue kritische Anforderungen erhalten positive und negative Tests. `OFFEN` darf nicht durch grüne Implementierungstests kaschiert werden. Vor dem signalaktiven Codeumbau müssen Kandidatenwahl, Indicator-Source-Mapping und alle Strategie-/Source-Punkte geschlossen sein, die Handelsentscheidung, Freshness, Capture, Revision, Latenz oder Fusionslogik beeinflussen.
