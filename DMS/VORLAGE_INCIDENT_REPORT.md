@@ -1,0 +1,27 @@
+# Vorlage – Incident Report
+
+- Incident-ID:
+- Beginn/Ende UTC:
+- Priorität:
+- Umgebung/Modus:
+- Strategieversion:
+- Quellen-/Settingshash:
+- betroffene Symbole/Komponenten:
+- erkannt durch:
+- Kurzbeschreibung:
+- Kapital-/Orderauswirkung:
+- wurden Orders gesendet oder blockiert:
+- letzter eindeutig bekannter Zustand:
+- Originalindikator-/Referenzabweichung vorhanden:
+- Evidence-/Signalreferenz:
+- Sofortmaßnahmen:
+- Reconciliation-Ergebnis:
+- technische Ursache:
+- beitragende Faktoren:
+- Recovery/Restore:
+- Daten-/Strategie-/Configversionen:
+- Belege/Log-Korrelations-IDs:
+- dauerhafte Korrektur:
+- neuer Test/Monitoringregel:
+- Owner und Fälligkeit:
+- Abschlussfreigabe:
