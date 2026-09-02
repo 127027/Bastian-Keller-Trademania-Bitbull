@@ -1,6 +1,6 @@
 # 05 – Marktdaten und Aktualisierung
 
-Status: `VERBINDLICH` für Datenplattform; tatsächlicher Strategie-Timeframe und Zusatzdaten bleiben bis DMS-03-Freeze `OFFEN`.
+Status: `VERBINDLICH` für die Datenplattform; tatsächlicher Strategie-Timeframe, Zusatzdaten und Source-Capture-Details bleiben bis DMS-03-Freeze `OFFEN`.
 
 ## Börsendaten
 
@@ -12,10 +12,14 @@ Es wird kein Timeframe aus einem anderen System automatisch übernommen. Die Dat
 
 ## Historie
 
+Für den reproduzierbaren Indicator-/Marktdatenpfad:
+
 - mindestens drei vollständige Jahre vor Backtestende;
 - zusätzlicher Warm-up gemäß DMS 03;
 - Datenquelle und Symbolmapping je Import festhalten;
 - Providerwechsel erzeugt neuen Datensatzstand.
+
+Für Bastian-Content gilt **keine erfundene Drei-Jahres-Pflicht**. Source-Replay nutzt ausschließlich tatsächlich vorhandene, zeitlich belastbare Evidence. Fehlende historische Live-/Update-Inhalte werden nicht synthetisch ergänzt.
 
 ## Startup-Sequenz
 
@@ -29,11 +33,14 @@ Es wird kein Timeframe aus einem anderen System automatisch übernommen. Die Dat
 8. finale Bars freigeben.
 9. nach Strategie-Freeze Indikatorzustand/Warm-up rekonstruieren.
 10. Paper/Live: Orders, Fills, Positionen, Salden abgleichen.
-11. erst bei gesundem Zustand Signalverarbeitung aktivieren.
+11. Source-Allowlist und Source-Adapter-Konfiguration laden.
+12. bekannte Source-Sessions/Pending Conditions auf Freshness/Expiry/Revisionslage prüfen.
+13. Source Discovery/Capture/Parser-Health prüfen.
+14. erst bei gesundem Zustand und bestandenen Gates signalaktive Verarbeitung freigeben.
 
-Historische Signale werden beim Start nicht als verspätete Live-Orders nachgesendet.
+Historische Signale und verspätete Source-Events werden beim Start nicht als rückwirkende Live-Orders nachgesendet.
 
-## Laufende Aktualisierung
+## Laufende Marktaktualisierung
 
 - Stream/WebSocket für Klines;
 - REST-Fallback und Gap-Recovery;
@@ -57,22 +64,70 @@ Um **00:05 UTC**:
 
 Keine synthetischen Kerzen ohne dokumentierte Providerbegründung.
 
-## Content-Datenstrom
+## Content-/Source-Datenstrom
 
-Neben OHLCV gibt es Bastian-/TradeMania-Quellenereignisse. Pro Ereignis mindestens:
+Neben OHLCV verarbeitet das System freigegebene Bastian-/TradeMania-Quellenereignisse. Contentzeit und Börsenzeit bleiben getrennte Zeitachsen.
 
-- Origin;
-- Source-ID/URL oder private Referenz;
-- Published-/Received-Time;
-- Live/Replay;
+### Source Session
+
+Mindestens:
+
+- `session_id`;
+- Origin/Provider;
+- eindeutige Source-/Channel-ID;
+- URL/private reference;
+- Status `SCHEDULED|LIVE|ENDED|REPLAY|STALE|UNAVAILABLE|UNKNOWN`;
+- angekündigte/erkannte Start-/Endzeit UTC;
+- allowlist version;
+- capture mode/version;
+- source health.
+
+### Source Event
+
+Mindestens:
+
+- immutable `source_event_id`;
+- `session_id`;
+- Origin und Source-ID/URL/private Referenz;
+- Published-Time;
+- Received-Time;
+- Spoken-Time oder Streamoffset soweit bestimmbar;
+- Live/Replay/Update-Status;
 - Sprecher;
-- Content-Hash;
-- Parsing-/Validationstatus.
+- Assetbezug;
+- Aussageklasse;
+- Bedingung/Zone soweit relevant;
+- Content-Hash/private Referenz;
+- Capture-/Parser-/Validation-Version und Status;
+- Freshness deadline;
+- Revision/Supersede-/Conflict-Referenz;
+- gemessene Source-/Capture-/Parser-Latenz.
 
-Börsenzeit und Contentzeit werden niemals gleichgesetzt.
+Roh-Capture und strukturierte Strategieentscheidung werden getrennt persistiert.
 
-## Terminfindung
+## Source Discovery und Terminfindung
 
-Der Bot darf keinen Wochenplan als ewige Strategie-Wahrheit hardcoden. Öffentliche Terminankündigungen und Plattform-Metadaten werden dynamisch beobachtet. Aktuell recherchierte Routinen stehen in DMS 22 und dienen nur als Erwartungsfenster.
+Der Bot darf keinen Wochenplan als ewige Strategie-Wahrheit hardcoden. Öffentliche Terminankündigungen und Plattform-Metadaten werden über allowgelistete offizielle Quellen dynamisch beobachtet, soweit technisch/rechtlich zulässig. Aktuell recherchierte Routinen in DMS 22 sind nur Erwartungsfenster.
 
-Wenn ein angekündigter Stream nicht startet oder technisch nicht auswertbar ist, entstehen keine synthetischen Aussagen. Der Content-Layer geht auf `DEGRADED_SOURCE`; Markt-/Indikatorzustand bleibt separat sichtbar.
+Wenn ein angekündigter Stream nicht startet oder technisch nicht auswertbar ist:
+
+- entstehen keine synthetischen Aussagen;
+- Source-/Capture-Layer wird `DEGRADED`;
+- stale Kontexte werden nicht still verlängert;
+- Drittzusammenfassungen ersetzen die Originalquelle nicht.
+
+## Pending Conditions und Marktfeed
+
+Konditionale Bastian-Aussagen werden erst nach DMS-03-Freeze als `PENDING_CONDITION` gegen Marktdaten geprüft. Ein Trigger ist nur zulässig, wenn:
+
+- verwendeter Marktfeed gesund ist;
+- Symbol/Timeframe/Operator/Zone eindeutig sind;
+- Condition noch frisch und nicht invalidiert ist;
+- keine neuere Bastian-Revision entgegensteht;
+- die Fusionsregel den Trigger zulässt.
+
+Ein Daten-Gap oder stale Feed darf keine Condition blind erfüllen.
+
+## Zeitwahrheit
+
+Börsenzeit, Source-Published-Time, Received-Time und Spoken-Time werden niemals gleichgesetzt. Für chronologische Replays und Live-Entscheidungen darf nur Information verwendet werden, die zum jeweiligen Entscheidungszeitpunkt bereits tatsächlich verfügbar war.
