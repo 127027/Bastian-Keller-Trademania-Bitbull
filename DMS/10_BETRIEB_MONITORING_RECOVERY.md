@@ -7,6 +7,7 @@
 Zusätzlich werden getrennt geführt:
 
 - `MARKET_DATA_HEALTH`
+- `INDICATOR_DATA_SOURCE_HEALTH`
 - `INDICATOR_HEALTH`
 - `SOURCE_DISCOVERY_HEALTH`
 - `SOURCE_CAPTURE_HEALTH`
@@ -17,6 +18,7 @@ Zusätzlich werden getrennt geführt:
 ## Scheduler / 24/7-Watcher
 
 - Marktfeed/Bar-Finalisierung: kontinuierlich;
+- indikatorrelevante Preis-/Volumen-/Zusatzfeeds: kontinuierlich bzw. ihrem Provider entsprechend;
 - Source Discovery für freigegebene Kanäle/Ankündigungen: kontinuierlich bzw. nach erlaubtem Providerverfahren;
 - Live-/Sessionstatus: während erwarteter/erkannter Sessions engmaschig;
 - Content Capture: ereignis-/streamgetrieben soweit technisch möglich;
@@ -35,9 +37,13 @@ Mindestens:
 
 - DB erreichbar/integer;
 - Systemzeit plausibel;
-- Binance erreichbar;
+- Binance Execution Venue erreichbar;
 - Marktfeed frisch;
 - erwartete Bars vollständig;
+- finaler Target Stack/Version geladen;
+- Indicator-Data-Source-Mapping entspricht der eingefrorenen Config;
+- Preis-/Volumen-/Override-/Footprint-/POC-Provider soweit signalrelevant erreichbar und frisch;
+- Sessiontimezone/DST-Konfiguration plausibel;
 - Börsenfilter aktuell;
 - offene Orders/Positionen reconciled;
 - allowgelistete Content-Quellen erreichbar bzw. sauber als unavailable markiert;
@@ -49,6 +55,18 @@ Mindestens:
 - Pending Conditions nicht über Expiry hinaus aktiv;
 - Telegram/Alarmweg verfügbar;
 - Backupziel verfügbar.
+
+## Indicator-Data-Ausfälle/-Abweichungen
+
+Wenn ein signalrelevanter Indicator-Provider, Volume Override oder Footprint-/POC-Provider ausfällt oder nicht zum eingefrorenen Mapping passt:
+
+- keine stillen Ersatzdaten aus einem anderen Provider verwenden;
+- betroffenen Indicator-Layer `DEGRADED` setzen;
+- neue Entscheidungen blockieren, wenn DMS 03 die fehlende Komponente benötigt;
+- bei rein optionalem/nicht signalrelevantem Overlay nur weiterlaufen, wenn das ausdrücklich so eingefroren ist;
+- Provider-/Mappingwechsel als Config-/Strategierevision behandeln und abhängige Runs `STALE` markieren.
+
+Ein lokaler OHLCV-Ersatz darf einen nicht reproduzierbaren Footprint-/POC-Wert nicht still ersetzen.
 
 ## Source-Ausfälle
 
@@ -85,8 +103,8 @@ Pro Source-Ereignis werden, soweit messbar, gespeichert:
 ## Alerts
 
 - P1: globaler Halt, unbekannte Order/Position, schwerer Reconciliation-/DB-Fehler;
-- P2: starke Execution-Abweichung, kritischer Daten-/Source-/Capture-/Parser-Ausfall, kritische Latenzüberschreitung, Telegram-Ausfall;
-- P3: nichtkritische Daten-/Source-Lücke, Session unerwartet unavailable, Backtest stale;
+- P2: signalrelevanter Indicator-Provider-/Mapping-Ausfall, starke Execution-Abweichung, kritischer Daten-/Source-/Capture-/Parser-Ausfall, kritische Latenzüberschreitung, Telegram-Ausfall;
+- P3: nichtkritische Daten-/Source-Lücke, optionaler Indicator-Overlay-Ausfall, Session unerwartet unavailable, Backtest stale;
 - P4: Info/Status.
 
 P1/P2 gehen an Telegram. Ist kritische Live-Alarmierung >5 Minuten nicht verfügbar, werden neue Live-Entries pausiert.
@@ -99,11 +117,11 @@ Backups verschlüsselt außerhalb des öffentlichen Repositories und außerhalb 
 - 4 wöchentliche;
 - 12 monatliche.
 
-Konfiguration/Deployment-Metadaten einschließen, niemals Secrets oder geschützte Rohinhalte unverschlüsselt. Fehlendes Backupziel blockiert Live-Freigabe.
+Konfiguration/Deployment-Metadaten einschließlich Target-Stack-/Indicator-Mapping-Version einschließen, niemals Secrets oder geschützte Rohinhalte unverschlüsselt. Fehlendes Backupziel blockiert Live-Freigabe.
 
 ## Restore
 
-Restore-Test vor Live und danach mindestens quartalsweise. Restore endet in `LIVE_DISABLED`, bis Daten, Börse, Orders, Positionen, Source-Sessions, Pending Conditions und Quellenstatus neu reconciled sind. Alte Pending Conditions werden nach Restore nicht blind reaktiviert; Freshness/Expiry wird neu geprüft.
+Restore-Test vor Live und danach mindestens quartalsweise. Restore endet in `LIVE_DISABLED`, bis Daten, Target Stack, Indicator-Source-Mapping, Börse, Orders, Positionen, Source-Sessions, Pending Conditions und Quellenstatus neu reconciled sind. Alte Pending Conditions werden nach Restore nicht blind reaktiviert; Freshness/Expiry wird neu geprüft.
 
 ## Paper-Soak
 
@@ -111,4 +129,4 @@ Mindestens **30 Kalendertage**. Zusätzlich muss pro Symbol eine Mindestabdeckun
 
 Falls nach 30 Tagen weniger als 20 abgeschlossene Trades vorliegen, wird der Soak bis 20 Trades fortgesetzt, maximal 90 Tage. Bastian-Source-Replay und reale Forward-Source-Ereignisse werden separat gezählt und dokumentiert.
 
-Für den Bastian-Layer muss der Paper-Soak zusätzlich reale oder reproduzierbare Fälle für Live-Start, klare Aussage, konditionale Aussage, Revision, Source-Ausfall und Streamende enthalten.
+Für den Bastian-Layer muss der Paper-Soak zusätzlich reale oder reproduzierbare Fälle für Live-Start, klare Aussage, konditionale Aussage, Revision, Source-Ausfall und Streamende enthalten. Für den Indicator-Layer muss mindestens ein Provider-/Override-Ausfallszenario getestet werden, sofern der Zielstack mehrere Datenquellen verwendet.
