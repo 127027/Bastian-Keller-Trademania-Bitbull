@@ -34,36 +34,39 @@ Beschlussstand dieser Vorbereitung: **02.09.2026, Europe/Berlin**.
 | BTK-DEC-024 | Neue eindeutige Bastian-Revisionen erzeugen neue Events und dürfen älteren Kontext nach eingefrorener Regel superseden; Historie wird nicht umgeschrieben. | BESCHLOSSEN |
 | BTK-DEC-025 | Source-/Capture-/Parser-/End-to-End-Latenzen werden gemessen und können ein ansonsten inhaltlich korrektes Signal wegen Veralterung blockieren. | BESCHLOSSEN |
 | BTK-DEC-026 | Der spätere Vergleich mit dem separat betriebenen Referenzbot erfolgt mit derselben Daten-, Kosten-, Kapital- und Forward-Paper-Basis und ohne Zwischenstands-Tuning. | BESCHLOSSEN |
+| BTK-DEC-027 | `Trademania - PVSRA Indicator` des TradingView-Publishers `BitbullTrading` ist öffentlich als realer TradeMania-/Bitbull-Kandidat verifiziert, aber noch **nicht** als finaler Zielindikator ausgewählt. | BESCHLOSSEN |
+| BTK-DEC-028 | Vor dem Strategie-Freeze wird ein vollständiges Inventar aus öffentlichen und rechtmäßig zugänglichen Member-Quellen erstellt: Indicator Masterclass, Strategie-Indikator Masterclass, Discord und `trademania.app/bots`. | BESCHLOSSEN |
+| BTK-DEC-029 | V1 soll keinen unnötigen Indikator-Stack erhalten. Gewählt wird der kleinste reproduzierbare Stack, den Bastian aktuell tatsächlich nutzt und der für ETH/Startuniversum geeignet ist. | BESCHLOSSEN |
+| BTK-DEC-030 | Zielindikator-Auswahl erfolgt nach Bastian-Nähe, ETH-Eignung, Determinismus, Repainting, Automation/Alerts, Backtestbarkeit, Latenz, Rechte, Komplexität und Forward-Paper – nicht nach Marketing oder einem einzelnen guten historischen Lauf. | BESCHLOSSEN |
+| BTK-DEC-031 | MACD, POC/VRVP/VPVR und RSI sind derzeit nur öffentlich belegte ergänzende Werkzeuge aus dem Bitbull-/TradeMania-Umfeld; sie werden erst V1-Bestandteil, wenn aktuelle Bastian-Evidence ihre konkrete Rolle bestätigt. | BESCHLOSSEN |
 
 ## B – Kritische offene Indikatorfragen
 
-Diese Punkte werden geschlossen, sobald der Eigentümer den echten Indikator bereitstellt.
-
 | ID | Frage | Status |
 |---|---|---|
-| BTK-OPEN-001 | Wie lautet der exakte Indikator-/Produktname? | OFFEN |
-| BTK-OPEN-002 | Welche Plattform, Publisher-ID und Version werden verwendet? | OFFEN |
+| BTK-OPEN-001 | Welcher Kandidat wird der finale Zielindikator bzw. minimale Zielstack? | OFFEN |
+| BTK-OPEN-002 | Welche Plattform, Publisher-ID und aktuelle Version werden final verwendet? | OFFEN |
 | BTK-OPEN-003 | Welche Inputs existieren und welche Defaults gelten? | OFFEN |
 | BTK-OPEN-004 | Welcher Signal-Timeframe bzw. welche Multi-Timeframe-Abhängigkeit gilt? | OFFEN |
 | BTK-OPEN-005 | Welche Daten/Preisquellen/Volumen-/Zusatzwerte werden benötigt? | OFFEN |
-| BTK-OPEN-006 | Was ist ein Kauf-, Verkaufs-, Neutral-, Trend- oder Bestätigungssignal? | OFFEN |
+| BTK-OPEN-006 | Was ist ein Kauf-, Verkaufs-, Neutral-, Trend-, Level- oder Bestätigungssignal? | OFFEN |
 | BTK-OPEN-007 | Darf auf offener Kerze gehandelt werden oder nur nach Bar-Close? | OFFEN |
-| BTK-OPEN-008 | Repaintet/verschiebt der Indikator historische Signale? | OFFEN |
+| BTK-OPEN-008 | Repaintet/verschiebt der Zielindikator historische Signale/Levels? | OFFEN |
 | BTK-OPEN-009 | Wie sind Warm-up und Initialzustand? | OFFEN |
-| BTK-OPEN-010 | Wie wird ein Signal in Entry/Exit/Ignore übersetzt? | OFFEN |
+| BTK-OPEN-010 | Wie wird ein Indikatorzustand in Entry/Exit/Ignore/Context übersetzt? | OFFEN |
 | BTK-OPEN-011 | Gibt es Pyramiding, Reentry, TP, SL, Trailing oder Time-Exit? | OFFEN |
 | BTK-OPEN-012 | Was passiert bei gleichzeitig gültigen Entry-Signalen und nur drei Slots? | OFFEN |
 | BTK-OPEN-013 | Darf ein wegen voller Slots verpasstes Signal später nachgeholt werden? | OFFEN |
-| BTK-OPEN-014 | Welche Overlays/Marker/Scorewerte müssen UI und Reports anzeigen? | OFFEN |
-| BTK-OPEN-015 | Welche Alerts stehen zur Verfügung und entsprechen sie exakt den visuellen Signalen? | OFFEN |
+| BTK-OPEN-014 | Welche Overlays/Marker/Score-/Levelwerte müssen UI und Reports anzeigen? | OFFEN |
+| BTK-OPEN-015 | Welche Alerts/Webhooks stehen zur Verfügung und entsprechen sie exakt den relevanten visuellen Zuständen? | OFFEN |
 | BTK-OPEN-016 | Ist Sourcecode rechtmäßig zugänglich oder erfolgt Parität als Black-Box-Referenz? | OFFEN |
 
 ## C – Kritische offene Bastian-/Source-Fragen
 
 | ID | Frage | Status |
 |---|---|---|
-| BTK-OPEN-017 | Welcher konkrete TradeMania-/Bastian-Indikator ist der Zielindikator? | OFFEN |
-| BTK-OPEN-018 | Welche offiziellen/member-only Quellen stehen nach Registrierung technisch und rechtlich zur Verfügung? | OFFEN |
+| BTK-OPEN-017 | Welcher konkrete TradeMania-/Bastian-Indikator bzw. Stack wird nach Member-Inventar ausgewählt? | OFFEN |
+| BTK-OPEN-018 | Welche offiziellen/member-only Quellen stehen technisch und rechtlich zur Verfügung? | OFFEN |
 | BTK-OPEN-019 | Darf eine eindeutige Bastian-Aussage selbst einen Entry erzeugen oder nur den Indikator bestätigen/blockieren/managen? | OFFEN |
 | BTK-OPEN-020 | Wie lange bleibt eine Aussage je Tradinghorizont gültig? | OFFEN |
 | BTK-OPEN-021 | Wie werden Teilverkäufe, „Gewinne sichern“, Stop-Nachziehen und Zielzonen übersetzt? | OFFEN |
@@ -79,23 +82,40 @@ Diese Punkte werden geschlossen, sobald der Eigentümer den echten Indikator ber
 | BTK-OPEN-031 | Was passiert mit aktivem Bastian-Kontext bei Source-Ausfall oder Streamende? | OFFEN |
 | BTK-OPEN-032 | Welche Pending Conditions überleben einen Neustart und unter welchen Freshness-/Reconciliation-Regeln? | OFFEN |
 
-## D – Vorgehen nach Registrierung/Erhalt
+## D – Neue offene Punkte aus Registrierung und öffentlichem Kandidateninventar
+
+| ID | Frage | Status |
+|---|---|---|
+| BTK-OPEN-033 | Welche Bots/Tools werden aktuell unter `trademania.app/bots` angezeigt und welche davon stammen tatsächlich aus Bastians Strategiepfad? | OFFEN |
+| BTK-OPEN-034 | Welche Indikatoren, Versionen und Setup-Anleitungen sind aktuell im TradeMania-Discord/Indicator-Bereich sichtbar? | OFFEN |
+| BTK-OPEN-035 | Nutzt Bastian den `Trademania - PVSRA Indicator` aktuell regelmäßig in seinen eigenen Lives/Analysen oder ist er primär Team-/Ausbildungswerkzeug? | OFFEN |
+| BTK-OPEN-036 | Welche Teile von PVSRA sind für Bastian tatsächlich entscheidungsrelevant: Vector-Candles, Imbalance, POC, EMA, WIL, Sessions, Pivot/ADR oder Kombinationen? | OFFEN |
+| BTK-OPEN-037 | Sind MACD, POC/Volume Profile oder RSI in Bastians aktuellem persönlichen Prozess Pflicht, optionaler Kontext oder nur Schulungsinhalt? | OFFEN |
+| BTK-OPEN-038 | Welche Alerts/Webhooks/Exports bieten PVSRA und die Member-Indikatoren aktuell? | OFFEN |
+| BTK-OPEN-039 | Welche konkreten Rechte/Nutzungsbedingungen gelten für automatisierte Auswertung der Member-Indikatoren und Bots? | OFFEN |
+| BTK-OPEN-040 | Welche TradeMania-Bots sind überhaupt für unser Binance-Spot-/ETH-Ziel relevant und welche verfolgen andere Börsen, Futures, Scalping oder andere Strategien? | OFFEN |
+
+## E – Vorgehen nach Registrierung/Erhalt
 
 1. Zugangsdaten nicht in Git speichern.
-2. exakten Indikatornamen, Version und Settings erfassen.
-3. offizielle Source-/Channel-IDs inventarisieren und allowlisten.
-4. mehrere Signale mit UTC-Zeit/Symbol/Timeframe dokumentieren.
-5. Open-Bar vs Close vs Reload testen.
-6. Alerts prüfen.
-7. mehrere reale Bastian-Lives/Updates mit Sessionstatus und Zeitachse labeln.
-8. Capture-Möglichkeiten je Quelle prüfen und Latenzen messen.
-9. Sprecher-, Asset-, Entry-/Exit-/Manage-, Conditional- und Revision-Beispiele sammeln.
-10. DMS 03 vervollständigen.
-11. alle offenen Punkte schließen oder ausdrücklich als nicht strategie-/betriebsrelevant verwerfen.
-12. Traceability/Config/Tests aktualisieren.
-13. erst dann `BTK-INDICATOR-SPEC-1.0` einfrieren und signalaktiven Codeumbau starten.
+2. **Zuerst vollständiges Tool-Inventar erstellen**: Discord, Indicator Masterclass, Strategie-Indikator Masterclass, `trademania.app/bots`, TradingView.
+3. pro Kandidat Name/Version/Publisher/Zweck/Timeframe/Settings/Alerts/Repainting/Rechte dokumentieren.
+4. markieren, welche Kandidaten Bastian persönlich aktuell verwendet.
+5. für ETH mehrere aktuelle Bastian-Lives/Analysen mit sichtbaren Tools und Levels sammeln.
+6. Zielindikator bzw. minimalen Stack anhand DMS-03-Auswahlkriterien wählen.
+7. finalen Indikator mit UTC-Zeit/Symbol/Timeframe und Referenzfällen dokumentieren.
+8. Open-Bar vs Close vs Reload testen.
+9. Alerts/Webhooks/Exports prüfen.
+10. offizielle Source-/Channel-IDs inventarisieren und allowlisten.
+11. mehrere reale Bastian-Lives/Updates mit Sessionstatus und Zeitachse labeln.
+12. Capture-Möglichkeiten je Quelle prüfen und Latenzen messen.
+13. Sprecher-, Asset-, Entry-/Exit-/Manage-, Conditional- und Revision-Beispiele sammeln.
+14. DMS 03 vervollständigen.
+15. alle offenen Punkte schließen oder ausdrücklich als nicht strategie-/betriebsrelevant verwerfen.
+16. Traceability/Config/Tests aktualisieren.
+17. erst dann `BTK-INDICATOR-SPEC-1.0` einfrieren und signalaktiven Codeumbau starten.
 
-## E – Nicht als offene Produktentscheidungen zu behandeln
+## F – Nicht als offene Produktentscheidungen zu behandeln
 
 Später fehlende Testresultate, Backtestzahlen, Paper-Soak, API-Key-Nachweis, Telegram-Testalarm oder Restore sind **Nachweise**, keine Strategieentscheidungen.
 
