@@ -38,7 +38,7 @@
 - Legacy-Audit auf fremde Indikatornamen/Formeln/Strategie-Specs durchgeführt;
 - verbindliche Echtzeitpipeline ergänzt: Source Discovery -> Session Validation -> Capture -> Speaker Validation -> Structuring -> Freshness/Conflict -> Conditional Watch -> Fusion -> Risk/Capital -> Execution Intent -> Audit;
 - Source-Allowlist und dynamische Livestream-/Update-Erkennung ergänzt; keine hart codierten Marketingzeiten als Strategie-Wahrheit;
-- Capture-Pfad je Quelle als offener, vor Paper/Live zu klärender Punkt aufgenommen (offizielle Untertitel/Transkript/API/lokale STT nur soweit zulässig);
+- Capture-Pfad je Quelle als offener, vor Paper/Live zu klärender Punkt aufgenommen;
 - Rohtranskript/automatische Zusammenfassung/Confidence ausdrücklich als nicht allein orderautorisierend definiert;
 - `PENDING_CONDITION`, Expiry, Invalidation, Revision/Supersede und Restart-Reconciliation vollständig spezifiziert;
 - Source-/Capture-/Parser-/End-to-End-Latenz als Mess- und Blockierkriterium aufgenommen;
@@ -47,3 +47,17 @@
 - fairen späteren Referenzbot-Vergleich mit gleicher Daten-, Kosten-, Kapital- und Forward-Paper-Basis verbindlich gemacht;
 - öffentliche TradeMania-About-/Live-Call-Quellen im Quellenkatalog verankert;
 - weiterhin keine erfundene Indikatorlogik, keine erfundene Bastian-Performance und keine Live-Freigabe vor Strategie-Freeze.
+
+## 0.5.0-prep – 02.09.2026 – TradeMania Tool-/Indikator-Recherche
+
+- kompletten DMS-/README-Stand erneut gegen den erweiterten TradeMania-/Member-Plan geprüft;
+- öffentlich verifizierten TradingView-Kandidaten `Trademania - PVSRA Indicator` des Publishers `BitbullTrading` aufgenommen;
+- PVSRA-Funktionsinventar dokumentiert: Vector/PVSRA-Candles, Imbalance-Zonen, Sessions, EMAs, Pivot-/M-Levels, POC, WIL, ADR/AWR, Vorperiodenlevels, Daily Open und Lite Mode;
+- geschützten Source-Status festgehalten; keine unbekannte interne Formel wird erfunden;
+- MACD, POC/VRVP/VPVR und RSI als öffentlich belegte ergänzende Bitbull-/TradeMania-Werkzeuge aufgenommen, jedoch nicht als V1-Pflichtstack;
+- offizielle `TradeMania Indikator Masterclass` und `Strategie-Indikator Masterclass` als noch zu inventarisierende Member-Quellen aufgenommen;
+- Eigentümerzugang zu TradeMania Discord/Live-Bereich und `trademania.app/bots` als `REVIEW AUSSTEHEND` dokumentiert, ohne geschützte Inhalte öffentlich zu spiegeln;
+- Strategie-Freeze um verpflichtendes öffentliches + Member-Kandidateninventar erweitert;
+- Auswahlregel eingefroren: kleinster reproduzierbarer Stack nach aktueller Bastian-Nutzung, ETH-Eignung, Determinismus, Repainting, Alerts/Automation, Backtestbarkeit, Latenz, Rechten, Komplexität und Forward-Paper;
+- Build-Plan so geändert, dass Zielindikator-Auswahl **vor** Implementierung erfolgt;
+- README und Source-Material-README auf Kandidateninventar und Member-Intake aktualisiert.
