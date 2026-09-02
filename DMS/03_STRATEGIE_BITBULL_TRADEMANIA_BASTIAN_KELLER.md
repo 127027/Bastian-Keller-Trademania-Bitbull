@@ -6,13 +6,73 @@ Vorgesehene erste eingefrorene Strategieversion: `BTK-INDICATOR-SPEC-1.0`.
 
 ## Zweck
 
-Dieses Dokument wird die **einzige normative technische Referenz** für die BTK-Strategie. Bis der tatsächliche Indikator, seine Einstellungen und ausreichend reale Bastian-Referenzen vorliegen, enthält es bewusst Aufnahme-, Prüf- und Freeze-Regeln statt erfundener Formeln.
+Dieses Dokument wird die **einzige normative technische Referenz** für die BTK-Strategie. Bis der tatsächliche Zielindikator, seine Einstellungen und ausreichend reale Bastian-Referenzen vorliegen, enthält es bewusst Aufnahme-, Prüf-, Auswahl- und Freeze-Regeln statt erfundener Formeln.
 
 Keine Strategie aus einem anderen Projekt darf als Ersatz dienen.
 
-# A – Originalindikator aufnehmen
+# A0 – Kandidateninventar und Auswahl vor Strategie-Freeze
 
-Nach Registrierung werden, soweit rechtmäßig zugänglich, dokumentiert:
+Vor der Auswahl des Zielindikators werden **alle tatsächlich verfügbaren TradeMania-/Bitbull-Kandidaten** inventarisiert. Das betrifft öffentliche TradingView-Scripts ebenso wie rechtmäßig zugängliche Indicator-Masterclass-, Discord- und `trademania.app/bots`-Inhalte.
+
+## Öffentlich verifizierter Kandidat 1
+
+`TM-CAND-001 = Trademania - PVSRA Indicator`
+
+Öffentlich verifiziert:
+
+- Plattform: TradingView;
+- Publisher: `BitbullTrading`;
+- Script: `https://www.tradingview.com/script/mIsU8J9c/`;
+- Source: protected/closed source;
+- öffentlich als über alle Timeframes nutzbar beschrieben;
+- Funktionsblöcke: PVSRA/Vector-Candles, Imbalance-Zonen, Sessions, EMAs, Pivot-/M-Levels, Vorperiodenlevels, ADR/AWR, Daily Open, POC, WIL und Lite Mode.
+
+Dies ist ein **Kandidat**, noch keine freigegebene BTK-Strategie. Die öffentliche Beschreibung zeigt umfangreiche Analyse-/Kontextfunktionen, aber keinen vollständigen deterministischen Entry-/Exit-Automaten. Eine persönliche Urheberschaft durch Bastian Keller wird nicht behauptet; verifiziert ist die Veröffentlichung über den `BitbullTrading`-Account.
+
+## Weitere öffentlich belegte Werkzeuge
+
+- MACD: öffentlich von Bitbull Education erklärt und in der PVSRA-Beschreibung als mögliche Momentum-/Trendbestätigung erwähnt;
+- POC/VRVP/VPVR: öffentlich in Bitbull-Education-Material verwendet; POC ist im PVSRA-Kandidaten integriert;
+- RSI: öffentlich von Bitbull Education erklärt;
+- TradeMania Indicator Masterclass: offiziell angekündigte eigene Indikatoren, einzelne Namen öffentlich nicht vollständig aufgelistet;
+- Strategie-Indikator Masterclass: offiziell angekündigte weitere Profi-/KI-basierte Tools, technische Details öffentlich nicht belegt.
+
+Diese Punkte sind **noch keine V1-Pflichtindikatoren**.
+
+## Member-Inventar
+
+Der Eigentümer hat Zugang zu:
+
+- TradeMania Discord / Live-/Memberbereich;
+- `https://trademania.app/bots`;
+- weiteren nach Registrierung sichtbaren Indicator-/Academy-Bereichen.
+
+Vor Auswahl werden daraus pro Tool mindestens Name, Version, Publisher, Zweck, unterstützte Märkte, Timeframes, Settings, Alerts/Webhooks, Signal-/Leveltypen, Repainting, Automationsgrad, Rechte und aktuelle Nutzung durch Bastian erfasst.
+
+Geschützte Rohinhalte werden nicht öffentlich gespiegelt.
+
+## Auswahlregel
+
+V1 verwendet **nicht automatisch mehrere Indikatoren**. Gewählt wird der kleinste reproduzierbare Stack, der Bastians aktuelle Entscheidungsweise auf ETH und den übrigen Startmärkten tatsächlich abbildet.
+
+Gewichtung:
+
+1. wiederholte aktuelle Nutzung durch Bastian;
+2. ETH-Eignung;
+3. reproduzierbare Zustände/Levels/Signale;
+4. Repainting-/Reload-Verhalten;
+5. Alerts/Webhooks oder belastbare Black-Box-Parität;
+6. historische Backtestbarkeit ohne Look-ahead;
+7. Live-Latenz;
+8. rechtmäßige Nutzbarkeit;
+9. geringer redundanter Indikator-Stack;
+10. stabiles Forward-Paper-Verhalten.
+
+Marketingaussagen oder ein einzelner guter Screenshot entscheiden nicht über die Auswahl.
+
+# A – Finalen Originalindikator aufnehmen
+
+Nach Auswahl werden, soweit rechtmäßig zugänglich, dokumentiert:
 
 1. exakter Indikatorname;
 2. Plattform und Publisher-/Accountname;
@@ -29,10 +89,11 @@ Nach Registrierung werden, soweit rechtmäßig zugänglich, dokumentiert:
 
 | Feld | Wert |
 |---|---|
-| Arbeitstitel | Bitbull / TradeMania / Bastian Keller Indikator |
-| exakter Produktname | OFFEN |
-| Plattform | OFFEN |
-| Publisher | OFFEN |
+| Kandidateninventar | DMS 22 |
+| derzeit stärkster öffentlicher Kandidat | `Trademania - PVSRA Indicator` |
+| finaler Zielindikator | OFFEN |
+| Plattform | OFFEN bis Auswahl |
+| Publisher | OFFEN bis Auswahl |
 | Version/Build | OFFEN |
 | Strategie-ID | `btk_indicator` vorläufig |
 | Strategieversion | `BTK-INDICATOR-SPEC-1.0` erst nach Freeze |
@@ -61,18 +122,20 @@ Bis zum Abschluss gilt: `trade_on_open_bar=FORBIDDEN`, sofern nicht ausdrücklic
 
 # C – Signal- und Positionsabbildung
 
-Die Tabelle wird erst anhand des echten Indikators geschlossen:
+Die Tabelle wird erst anhand des final ausgewählten Indikators geschlossen:
 
 | Originalereignis | Botzustand vorher | Botaktion | Gültigkeit | Status |
 |---|---|---|---|---|
-| Kaufsignal | flat | OFFEN | OFFEN | OFFEN |
-| Kaufsignal | long | OFFEN | OFFEN | OFFEN |
-| Verkaufssignal | long | OFFEN | OFFEN | OFFEN |
-| Verkaufssignal | flat | OFFEN | OFFEN | OFFEN |
+| Kaufsignal/Long-Condition | flat | OFFEN | OFFEN | OFFEN |
+| Kaufsignal/Long-Condition | long | OFFEN | OFFEN | OFFEN |
+| Verkaufssignal/Exit-Condition | long | OFFEN | OFFEN | OFFEN |
+| Verkaufssignal/Exit-Condition | flat | OFFEN | OFFEN | OFFEN |
+| Kontext-/Levelereignis ohne Entry | beliebig | OFFEN | OFFEN | OFFEN |
 | kein Signal | beliebig | OFFEN | OFFEN | OFFEN |
 
 Explizit zu klären:
 
+- ob der Zielindikator überhaupt diskrete Buy/Sell-Signale liefert oder primär Kontext/Levels;
 - ein Einstieg pro Trend oder wiederholte Entries;
 - Pyramiding/Reentry;
 - Gegensignal als Exit;
@@ -95,12 +158,14 @@ Je Referenzbar werden mindestens gespeichert:
 - UTC-Barzeit;
 - OHLCV;
 - sichtbare/ableitbare Indikatorwerte;
-- Originalzustand und Marker;
+- Originalzustand und Marker/Levels;
 - Alertzustand soweit vorhanden;
 - Screenshot-/Export-/Source-Referenz;
 - Bot-Sollzustand.
 
 Ziel ist eine ausreichend starke, reproduzierbare Paritätsbasis, vorzugsweise mindestens 1.000 aufeinanderfolgende Bars je Referenzmarkt, soweit die Indikatorplattform dies praktisch erlaubt.
+
+Bei einem geschützten Script wie `TM-CAND-001` gilt: beobachtbare Black-Box-Parität ist zulässig; intern unbekannte Formeln dürfen nicht als sicher bekannt dargestellt werden.
 
 # F – Bastian-Keller-Live-/Content-Schicht
 
@@ -108,11 +173,13 @@ Ziel ist eine ausreichend starke, reproduzierbare Paritätsbasis, vorzugsweise m
 
 | Origin | Bedeutung | Unmittelbar handelbar? |
 |---|---|---|
-| `BTK_INDICATOR` | Originalindikator | erst nach Freeze |
+| `BTK_INDICATOR` | final ausgewählter Originalindikator/Stack | erst nach Freeze |
 | `BASTIAN_YOUTUBE_LIVE` | aktuelle Live-Aussage von Bastian | nur validiert |
 | `BASTIAN_YOUTUBE_UPDATE` | veröffentlichtes Marktupdate | nur innerhalb Freshness |
 | `BASTIAN_TELEGRAM` | offizieller Kanal/Ankündigung/Markthinweis | nur nach eingefrorener Regel |
-| `TRADEMANIA_MEMBER_CONTENT_BASTIAN` | rechtmäßig zugänglicher Bastian-Inhalt | nur nach eingefrorener Regel |
+| `TRADEMANIA_DISCORD_BASTIAN` | rechtmäßig zugänglicher Bastian-/Memberinhalt | nur nach eingefrorener Regel |
+| `TRADEMANIA_MEMBER_CONTENT_BASTIAN` | sonstiger rechtmäßig zugänglicher Bastian-Inhalt | nur nach eingefrorener Regel |
+| `TRADEMANIA_BOT_CATALOG` | `/bots`-Katalog/Toolinfo | nie direkt handelbar ohne eigene Strategieentscheidung |
 | `TRADEMANIA_OTHER_MENTOR` | anderer Mentor | nein, bis ausdrücklich freigegeben |
 
 ## Session-Lifecycle
@@ -181,7 +248,7 @@ Nach Freeze läuft eine neue Bastian-Aussage nur über diese Kette:
 6. **Structuring:** Asset, Aussageklasse, Aktion/Richtung, Preis/Zone, Bedingung, Horizont extrahieren.
 7. **Validation:** Pflichtfelder, Unsicherheit, Freshness, Revisionen und Konflikte prüfen.
 8. **Conditional Watch:** bei „wenn X, dann Y“ zunächst `PENDING_CONDITION`; Marktbedingung separat beobachten.
-9. **Fusion:** eingefrorene Beziehung zwischen Bastian und Indikator anwenden.
+9. **Fusion:** eingefrorene Beziehung zwischen Bastian und finalem Indikator-Stack anwenden.
 10. **Risk/Capital/Exchange Guard:** Kapital, Slots, Börsenfilter, Preisabweichung und Systemhealth prüfen.
 11. **Execution Intent:** erst jetzt darf ein Order-Intent entstehen.
 12. **Audit:** Rohreferenz, strukturierte Aussage, Entscheidung, Blockgrund, Latenzen und Orderbezug speichern.
@@ -233,7 +300,7 @@ Vor Auslösung müssen definiert und erfüllt sein:
 - Invalidation;
 - Marktfeed-Quelle;
 - Konfliktfreiheit mit neueren Bastian-Aussagen;
-- Fusionsregel mit dem Indikator.
+- Fusionsregel mit dem finalen Indikator-Stack.
 
 Nach Expiry oder Invalidation wird die Regel nicht reaktiviert, außer ein neues Source-Ereignis erzeugt sie erneut.
 
@@ -256,7 +323,7 @@ Nur die nach DMS 03 gültige aktuelle Kontextversion darf neue Entscheidungen be
 
 Die endgültige Priorität wird erst nach echten Beispielen eingefroren. Zu prüfen sind:
 
-- `INDICATOR_PRIMARY`: Indikator handelt, Bastian bestätigt/blockiert/managed;
+- `INDICATOR_PRIMARY`: Indikator handelt, Bastian bestätigt/blockiert/managt;
 - `BASTIAN_PRIMARY`: Bastian primär, Indikator als Timing/Bestätigung;
 - `DUAL_CONFIRMATION`: Entry nur bei Übereinstimmung;
 - `SOURCE_SPECIFIC`: Bastian darf nur bestimmte Aktionen überschreiben.
@@ -304,6 +371,9 @@ Vor Live müssen mindestens getestet werden:
 
 Freeze erst wenn:
 
+- öffentliches + Member-Indikator-/Bot-Inventar geprüft;
+- finaler Zielindikator bzw. minimaler Zielstack bewusst ausgewählt;
+- aktuelle Nutzung durch Bastian ausreichend belegt;
 - Indikatoridentität und Version eindeutig;
 - Inputs/Defaults vollständig;
 - Timeframe/Datenabhängigkeiten geklärt;
