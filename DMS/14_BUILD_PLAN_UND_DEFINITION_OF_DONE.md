@@ -13,17 +13,47 @@ Der Bot wird nicht experimentell neu erfunden. Erst wird die BTK-Strategie fachl
 
 DoD: DMS kann echten Indikator und Bastian-Evidence ohne Strukturumbau aufnehmen.
 
-## Phase 1 – Originalindikator aufnehmen
+## Phase 1 – Indikator-/Bot-Inventar und Zielauswahl
 
-- Zugang rechtmäßig erhalten;
+Bevor ein Indikator implementiert wird, werden **alle real verfügbaren Kandidaten** aufgenommen:
+
+- öffentliches TradingView-Profil `BitbullTrading`;
+- verifizierter Kandidat `Trademania - PVSRA Indicator`;
+- TradeMania Indicator Masterclass;
+- Strategie-Indikator Masterclass;
+- TradeMania Discord / Indicator-/Live-Bereiche;
+- `trademania.app/bots`;
+- weitere tatsächlich von Bastian verwendete Tools/Indikatoren aus aktuellen Lives.
+
+Pro Kandidat dokumentieren:
+
+- exakter Name, Publisher und Version;
+- Zweck und Tradingstil;
+- Märkte/Timeframes;
+- Settings/Defaults;
+- sichtbare Zustände/Levels/Signale;
+- Alerts/Webhooks/Exports;
+- Repainting/Reload-Verhalten;
+- Datenabhängigkeiten;
+- Rechte/Zugriff;
+- aktuelle Nutzung durch Bastian;
+- Eignung für ETH und unseren Spot-Unterbau.
+
+Danach Zielindikator bzw. **minimalen Zielstack** anhand DMS 03 auswählen. Keine automatische Indikator-Sammlung und kein Feature-Stacking ohne belegten Mehrwert.
+
+DoD: Kandidateninventar vollständig genug, Zielauswahl begründet, keine wesentliche öffentlich/memberseitig verfügbare Alternative ungeprüft übergangen.
+
+## Phase 2 – Finalen Originalindikator vollständig aufnehmen
+
 - Name/Version/Settings/Alerts erfassen;
 - Screenshots/Referenzfälle sammeln;
-- Timeframe, Daten, Repainting, Entry/Exit, Slotlogik klären;
-- Veröffentlichungsrechte bestimmen.
+- Timeframe, Daten, Repainting, Entry/Exit/Context und Slotlogik klären;
+- Veröffentlichungs-/Nutzungsrechte bestimmen;
+- Golden-/Black-Box-Parität vorbereiten.
 
 DoD: keine kritische Indikatorfrage offen.
 
-## Phase 2 – Bastian-Evidence und Quelleninventar aufnehmen
+## Phase 3 – Bastian-Evidence und Quelleninventar aufnehmen
 
 - mehrere echte Lives/Updates beobachten;
 - offizielle Source-/Channel-IDs allowlisten;
@@ -31,11 +61,12 @@ DoD: keine kritische Indikatorfrage offen.
 - Entry/Exit/Manage-Sprache reproduzierbar klassifizieren;
 - Replay-vs-Live und Revisionen testen;
 - zulässigen Capture-Pfad je Quelle bestimmen;
-- reale Source-/Capture-/Parser-Latenzen messen.
+- reale Source-/Capture-/Parser-Latenzen messen;
+- prüfen, welche Indikator-/Levelinformationen Bastian in seinen Entscheidungen tatsächlich benutzt.
 
 DoD: Quellenidentität und technisch/rechtlich zulässige Erfassung sind dokumentiert; Bastian-Regeln sind deterministisch beschreibbar.
 
-## Phase 3 – Live-Reaktionsmodell schließen
+## Phase 4 – Live-Reaktionsmodell schließen
 
 - Session-Lifecycle festlegen;
 - Actionable-Pflichtfelder festlegen;
@@ -47,7 +78,7 @@ DoD: Quellenidentität und technisch/rechtlich zulässige Erfassung sind dokumen
 
 DoD: dieselbe gelabelte Aussage führt bei denselben Marktbedingungen reproduzierbar zur selben Strategieentscheidung.
 
-## Phase 4 – `BTK-INDICATOR-SPEC-1.0` einfrieren
+## Phase 5 – `BTK-INDICATOR-SPEC-1.0` einfrieren
 
 - DMS 03 finalisieren;
 - Config/Traceability/Tests synchronisieren;
@@ -56,7 +87,7 @@ DoD: dieselbe gelabelte Aussage führt bei denselben Marktbedingungen reproduzie
 
 DoD: unabhängiger Entwickler kann die Strategie ohne Interpretation implementieren.
 
-## Phase 5 – Bot-Unterbau übernehmen und gezielt anpassen
+## Phase 6 – Bot-Unterbau übernehmen und gezielt anpassen
 
 Vor jeder Änderung prüfen, welche generische Funktion bereits passt.
 
@@ -70,7 +101,7 @@ Vor jeder Änderung prüfen, welche generische Funktion bereits passt.
 - keine parallele zweite Execution-Engine;
 - neue Felder nur soweit DMS verlangt.
 
-## Phase 6 – Parität und Source-Replay
+## Phase 7 – Parität und Source-Replay
 
 - Indicator-Golden/Black-Box;
 - Source-Session-Replay;
@@ -80,7 +111,7 @@ Vor jeder Änderung prüfen, welche generische Funktion bereits passt.
 - chronologische Fusionsentscheidungen;
 - keine ungeklärte Signalabweichung.
 
-## Phase 7 – Backtests
+## Phase 8 – Backtests
 
 - Daten aktualisieren;
 - drei Jahre, soweit die eingefrorene Indikatorstrategie dies reproduzierbar zulässt;
@@ -93,7 +124,7 @@ Vor jeder Änderung prüfen, welche generische Funktion bereits passt.
 
 Historische Bastian-Aussagen werden nur dort backgetestet, wo zeitlich belastbare Source-Evidence existiert. Fehlende Historie wird nicht erfunden.
 
-## Phase 8 – UI und Paper 24/7
+## Phase 9 – UI und Paper 24/7
 
 - Indicator-, Session-, Capture-, Parser-, Bastian-Kontext- und Pending-Condition-Zustände sichtbar;
 - echte Marktdaten;
@@ -103,7 +134,7 @@ Historische Bastian-Aussagen werden nur dort backgetestet, wo zeitlich belastbar
 - Failure Injection/Reconciliation;
 - Soak gemäß DMS 10/12.
 
-## Phase 9 – fairer Referenzvergleich
+## Phase 10 – fairer Referenzvergleich
 
 Beide Bots werden unter identischer bzw. fachlich vergleichbarer Basis gegenübergestellt:
 
@@ -116,12 +147,13 @@ Beide Bots werden unter identischer bzw. fachlich vergleichbarer Basis gegenübe
 
 Bewertung mindestens nach Netto-PnL/Tag, Drawdown, Profit Factor soweit stabil, Kosten, Kapitalnutzung, Ausfällen und Latenz.
 
-## Phase 10 – kontrollierte Live-Freigabe
+## Phase 11 – kontrollierte Live-Freigabe
 
 Live erst nach separatem Gate. Ein positiver Backtest oder einzelne erfolgreiche Bastian-Signale reichen nicht.
 
 ## Gesamt-DoD
 
+- Kandidateninventar geprüft und Zielstack bewusst ausgewählt;
 - DMS 03 eingefroren;
 - Indicator-Parität belegt;
 - Bastian-Source-/Session-/Capture-/Parser-Parität belegt;
