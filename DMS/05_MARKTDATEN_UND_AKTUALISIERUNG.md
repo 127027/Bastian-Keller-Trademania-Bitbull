@@ -1,14 +1,34 @@
 # 05 – Marktdaten und Aktualisierung
 
-Status: `VERBINDLICH` für die Datenplattform; tatsächlicher Strategie-Timeframe, Zusatzdaten und Source-Capture-Details bleiben bis DMS-03-Freeze `OFFEN`.
+Status: `VERBINDLICH` für die Datenplattform; tatsächlicher Strategie-Timeframe, indikatorabhängige Datenquellen und Source-Capture-Details bleiben bis DMS-03-Freeze teilweise `OFFEN`.
 
 ## Börsendaten
 
-Primärquelle ist Binance Spot. Gespeichert werden pro Symbol/Timeframe mindestens Open-/Close-Time UTC, OHLC, Volumen, `closed/provisional`, Datenquelle, Abrufzeit und Import-Batch-ID. Preise und Mengen werden decimal-sicher verarbeitet.
+Primäre Handels-/Execution-Basis ist Binance Spot. Gespeichert werden pro Symbol/Timeframe mindestens Open-/Close-Time UTC, OHLC, Volumen, `closed/provisional`, Datenquelle, Abrufzeit und Import-Batch-ID. Preise und Mengen werden decimal-sicher verarbeitet.
+
+## Indikator-Datenquellen sind separat zu erfassen
+
+Der endgültige Zielindikator darf **nicht automatisch** so behandelt werden, als nutze jede Berechnung dieselbe Börsenquelle wie die spätere Orderausführung.
+
+Vor Strategie-Freeze werden je Indikatorfunktion getrennt dokumentiert:
+
+- Chart-/Preisquelle;
+- Volumen-/Tick-Volumenquelle;
+- mögliche Cross-Exchange-/Volume-Overrides;
+- Spot vs Futures/Perpetual als Datenbasis;
+- Sessionkalender/Zeitzone/DST;
+- Footprint-/POC-Datenquelle und Auflösung, falls benötigt;
+- externe Zusatzdaten;
+- Timeframe und Aggregationsmethode;
+- Symbolmapping zwischen Provider und Binance Spot.
+
+Der öffentlich verifizierte Kandidat `Trademania - PVSRA Indicator` beschreibt ausdrücklich die Möglichkeit, z. B. einen Chart einer Börse zu betrachten und für PVSRA-/Vector-Candles das Volumen einer anderen Börse wie Binance zu verwenden. Falls dieser Kandidat ausgewählt wird, muss das tatsächlich bei Bastian verwendete Source-Mapping als Einstellung/Evidence erfasst werden.
+
+Der öffentliche PVSRA-Kandidat beschreibt außerdem POC-Informationen aus einer Footprint-Berechnung. Es wird **nicht** angenommen, dass diese Werte aus normalen 1h-OHLCV-Daten exakt rekonstruierbar sind. Falls die erforderliche POC-/Footprint-Logik oder Datenbasis nicht rechtmäßig/exakt reproduzierbar ist, wird sie als Black-Box-/externe Referenz behandelt oder aus dem signalrelevanten V1-Pfad ausgeschlossen – niemals angenähert und als exakt ausgegeben.
 
 ## Strategie-Timeframe
 
-Es wird kein Timeframe aus einem anderen System automatisch übernommen. Die Datenplattform muss die für den Originalindikator benötigten Timeframes nach DMS 03 vollständig unterstützen. UI-Zeiträume sind keine Trading-Timeframes.
+Es wird kein Timeframe aus einem anderen System automatisch übernommen. Die Datenplattform muss die für den final ausgewählten Indikator/Stack benötigten Timeframes nach DMS 03 vollständig unterstützen. UI-Zeiträume sind keine Trading-Timeframes.
 
 ## Historie
 
@@ -16,8 +36,8 @@ Für den reproduzierbaren Indicator-/Marktdatenpfad:
 
 - mindestens drei vollständige Jahre vor Backtestende;
 - zusätzlicher Warm-up gemäß DMS 03;
-- Datenquelle und Symbolmapping je Import festhalten;
-- Providerwechsel erzeugt neuen Datensatzstand.
+- jede relevante Datenquelle und jedes Symbolmapping je Import festhalten;
+- Providerwechsel oder geändertes Source-Mapping erzeugt neuen Datensatzstand.
 
 Für Bastian-Content gilt **keine erfundene Drei-Jahres-Pflicht**. Source-Replay nutzt ausschließlich tatsächlich vorhandene, zeitlich belastbare Evidence. Fehlende historische Live-/Update-Inhalte werden nicht synthetisch ergänzt.
 
@@ -27,27 +47,30 @@ Für Bastian-Content gilt **keine erfundene Drei-Jahres-Pflicht**. Source-Replay
 2. Systemuhr/UTC prüfen.
 3. DB-Integrität prüfen.
 4. Börsenmetadaten/Filter für alle zehn Paare laden.
-5. Zeitraum, Duplikate, Lücken und OHLC-Konsistenz prüfen.
-6. fehlende Bereiche paginiert nachladen.
-7. offene Kerze als `provisional` markieren.
-8. finale Bars freigeben.
-9. nach Strategie-Freeze Indikatorzustand/Warm-up rekonstruieren.
-10. Paper/Live: Orders, Fills, Positionen, Salden abgleichen.
-11. Source-Allowlist und Source-Adapter-Konfiguration laden.
-12. bekannte Source-Sessions/Pending Conditions auf Freshness/Expiry/Revisionslage prüfen.
-13. Source Discovery/Capture/Parser-Health prüfen.
-14. erst bei gesundem Zustand und bestandenen Gates signalaktive Verarbeitung freigeben.
+5. alle für den eingefrorenen Indikator benötigten Preis-/Volumen-/Zusatzprovider und Source-Mappings laden.
+6. Zeitraum, Duplikate, Lücken und OHLC-Konsistenz prüfen.
+7. falls separate Volumen-/Footprint-/Sessiondaten erforderlich sind, deren Frische und Mapping separat prüfen.
+8. fehlende Bereiche paginiert nachladen.
+9. offene Kerze als `provisional` markieren.
+10. finale Bars freigeben.
+11. nach Strategie-Freeze Indikatorzustand/Warm-up rekonstruieren.
+12. Paper/Live: Orders, Fills, Positionen, Salden abgleichen.
+13. Source-Allowlist und Source-Adapter-Konfiguration laden.
+14. bekannte Source-Sessions/Pending Conditions auf Freshness/Expiry/Revisionslage prüfen.
+15. Source Discovery/Capture/Parser-Health prüfen.
+16. erst bei gesundem Zustand und bestandenen Gates signalaktive Verarbeitung freigeben.
 
 Historische Signale und verspätete Source-Events werden beim Start nicht als rückwirkende Live-Orders nachgesendet.
 
 ## Laufende Marktaktualisierung
 
-- Stream/WebSocket für Klines;
+- Stream/WebSocket für benötigte Klines/Feeds;
 - REST-Fallback und Gap-Recovery;
 - finale Bar genau einmal verarbeiten;
 - Reconnect mit Backoff/Jitter;
-- 90 s ohne Streamupdate -> `DEGRADED`;
-- erwartete finale Strategiebar >120 s verspätet -> Symbol pausieren/recovern.
+- 90 s ohne erwartetes Streamupdate -> `DEGRADED`;
+- erwartete finale Strategiebar >120 s verspätet -> Symbol pausieren/recovern;
+- indikatorrelevante Zusatzfeeds erhalten eigene Health-/Freshness-Prüfung.
 
 Intrabar-Handel bleibt deaktiviert, bis DMS 03 ihn ausdrücklich und reproduzierbar verlangt.
 
@@ -58,15 +81,16 @@ Um **00:05 UTC**:
 - alle zehn Paare prüfen;
 - fehlende abgeschlossene Bars nachladen;
 - Duplikate/Raster/OHLC/Frische validieren;
+- indikatorabhängige Zusatzprovider/Source-Mappings prüfen;
 - Symbolstatus und Börsenfilter aktualisieren;
 - Datenqualitätsreport schreiben;
-- abhängige Backtests bei historischen Korrekturen `STALE` markieren.
+- abhängige Backtests bei historischen Korrekturen oder geändertem Source-Mapping `STALE` markieren.
 
-Keine synthetischen Kerzen ohne dokumentierte Providerbegründung.
+Keine synthetischen Kerzen oder angenäherten Indikator-Zusatzdaten ohne ausdrücklich dokumentierte, fachlich freigegebene Methodik.
 
 ## Content-/Source-Datenstrom
 
-Neben OHLCV verarbeitet das System freigegebene Bastian-/TradeMania-Quellenereignisse. Contentzeit und Börsenzeit bleiben getrennte Zeitachsen.
+Neben Marktdaten verarbeitet das System freigegebene Bastian-/TradeMania-Quellenereignisse. Contentzeit und Börsenzeit bleiben getrennte Zeitachsen.
 
 ### Source Session
 
@@ -118,7 +142,7 @@ Wenn ein angekündigter Stream nicht startet oder technisch nicht auswertbar ist
 
 ## Pending Conditions und Marktfeed
 
-Konditionale Bastian-Aussagen werden erst nach DMS-03-Freeze als `PENDING_CONDITION` gegen Marktdaten geprüft. Ein Trigger ist nur zulässig, wenn:
+Konditionale Bastian-Aussagen werden erst nach DMS-03-Freeze als `PENDING_CONDITION` gegen den dafür eingefrorenen Marktfeed geprüft. Ein Trigger ist nur zulässig, wenn:
 
 - verwendeter Marktfeed gesund ist;
 - Symbol/Timeframe/Operator/Zone eindeutig sind;
@@ -130,4 +154,4 @@ Ein Daten-Gap oder stale Feed darf keine Condition blind erfüllen.
 
 ## Zeitwahrheit
 
-Börsenzeit, Source-Published-Time, Received-Time und Spoken-Time werden niemals gleichgesetzt. Für chronologische Replays und Live-Entscheidungen darf nur Information verwendet werden, die zum jeweiligen Entscheidungszeitpunkt bereits tatsächlich verfügbar war.
+Börsenzeit, Indikator-Providerzeit, Source-Published-Time, Received-Time und Spoken-Time werden niemals gleichgesetzt. Für chronologische Replays und Live-Entscheidungen darf nur Information verwendet werden, die zum jeweiligen Entscheidungszeitpunkt bereits tatsächlich verfügbar war.
