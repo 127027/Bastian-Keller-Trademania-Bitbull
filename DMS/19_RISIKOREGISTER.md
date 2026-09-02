@@ -30,6 +30,24 @@ Bewertung: Eintritt `N/M/H`, Auswirkung `N/M/H`.
 | BTK-R-024 | Bot wird unnötig strukturell umgebaut | M | M/H | Minimaländerungsregel | Refactor zurücknehmen | Engineering |
 | BTK-R-025 | Vergleichsbot erhält andere Daten/Kosten/Kapitalbasis | M | H | Vergleichsmanifest + gleiche Hashes | Vergleich invalidieren | QA |
 | BTK-R-026 | Zwischenstands-Tuning verfälscht A/B-Vergleich | M | H | Parameterfreeze vor Vergleich | Vergleich neu starten | Strategie/QA |
+| BTK-R-027 | öffentlich erster gefundener Indikator wird vorschnell als Ziel ausgewählt | M | H | vollständiges Public-/Member-Inventar + Auswahlmatrix | Auswahl zurücksetzen | Strategie |
+| BTK-R-028 | unnötiges Indicator-Stacking erzeugt Overfitting/Redundanz | H | H | minimaler Stack + Ablation/Forward-Paper | Zusatzindikator entfernen | Strategie/QA |
+
+## Indicator-/Daten-/Tool-Risiken
+
+| ID | Risiko | Eintritt | Auswirkung | Prävention/Erkennung | Reaktion | Owner |
+|---|---|---:|---:|---|---|---|
+| BTK-R-045 | geschützter PVSRA-Source wird aus öffentlicher Beschreibung als vollständig bekannte Formel behandelt | H | H | Black-Box-Parität, keine unbewiesenen Interna | Spec korrigieren/Runs stale | Strategie/QA |
+| BTK-R-046 | Chartpreis und PVSRA-Volumen stammen in Referenz und Bot aus unterschiedlichen Providern | M/H | H | explizites Indicator-Source-Mapping + Mapping-Hash | Signale pausieren/Runs invalidieren | Daten |
+| BTK-R-047 | Volume Override wird im Backtest anders behandelt als in TradingView/Paper | M | H | Cross-Exchange-Override-Fixtures | Run invalidieren | Daten/QA |
+| BTK-R-048 | Spot-, Perpetual- oder Futures-Volumen werden still verwechselt | M | H | `market_type` je Source verpflichtend | Strategie pausieren | Daten |
+| BTK-R-049 | Session-Zeitzone/DST erzeugt andere WIL-/Session-Levels | M | H | Sessiontimezone/DST-Freeze + Tests | Referenzen neu erzeugen | Daten/QA |
+| BTK-R-050 | POC-/Footprint-Wert wird aus OHLCV angenähert und fälschlich als Originalwert behandelt | H | H | exakter Provider/Resolution oder `BLACK_BOX_EXTERNAL` | Komponente aus Signalpfad nehmen | Strategie/Daten |
+| BTK-R-051 | TradeMania-Member-Indikator ändert Version ohne klare Versionsanzeige | M | H | regelmäßige Settings-/Screenshot-/Golden-Hashes | neue Version aufnehmen, Runs stale | Strategie/QA |
+| BTK-R-052 | Marketingbegriff „KI-basiert/selbstlernend“ wird als reproduzierbare technische Eigenschaft übernommen | M | H | nur beobachtbare/versionierbare Funktion spezifizieren | Claim verwerfen | Produkt/Strategie |
+| BTK-R-053 | `/bots`-Tool ist für Futures/andere Börse/anderen Tradingstil gedacht und wird fälschlich auf Binance Spot übertragen | M | H | Bot-Inventar: Markt, Exchange, Ordertyp, Risiko prüfen | Kandidat verwerfen | Strategie |
+| BTK-R-054 | proprietäres Tool lässt sich nicht rechtmäßig oder reproduzierbar automatisieren | M | H | Rechte-/Alert-/API-/Black-Box-Prüfung vor Auswahl | nicht signalrelevant verwenden | Security/Strategie |
+| BTK-R-055 | MACD/RSI/POC wird nur wegen öffentlichem Lernmaterial in V1 aufgenommen, obwohl Bastian es aktuell nicht nutzt | M | M/H | aktuelle Live-Evidence + Ablation | Zusatztool entfernen | Strategie |
 
 ## Source-/Sprach-/Live-Risiken
 
@@ -54,7 +72,8 @@ Bewertung: Eintritt `N/M/H`, Auswirkung `N/M/H`.
 
 ## Reviewtakt
 
-- nach Erhalt des Indikators;
+- nach jeder Kandidateninventar-/Zielstack-Änderung;
+- nach Erhalt/Update des finalen Indikators;
 - nach Freischaltung neuer Bastian-/TradeMania-Quellen;
 - vor jedem Gate;
 - nach Incident oder Strategieänderung;
