@@ -1,0 +1,58 @@
+schema_version: 1
+backtest_version: btk-v1
+run_id: TO_BE_ASSIGNED
+run_mode: all_ten_isolated  # alternativ: single_symbol oder paper_live_mirror
+created_at_utc: TO_BE_ASSIGNED
+status: not_run
+
+strategy:
+  version: UNFROZEN
+  normative_spec: DMS/03_STRATEGIE_BITBULL_TRADEMANIA_BASTIAN_KELLER.md
+  indicator_identity: TO_BE_ASSIGNED
+  indicator_source_sha256: null
+  source_evidence_set_id: TO_BE_ASSIGNED
+  config_sha256: TO_BE_ASSIGNED
+  code_commit: TO_BE_ASSIGNED
+
+data:
+  provider: binance_spot
+  snapshot_sha256: TO_BE_ASSIGNED
+  timeframe: TO_BE_ASSIGNED
+  warmup_bars: TO_BE_ASSIGNED
+  warmup_start_utc: TO_BE_ASSIGNED
+  report_start_utc: TO_BE_ASSIGNED
+  report_end_utc: TO_BE_ASSIGNED
+
+capital:
+  isolated_starting_usdt_per_symbol: 250.00
+  isolated_target_notional_usdt: 250.00
+  isolated_compounding: false
+  paper_live_mirror_total_usdt: 240.00
+  paper_live_mirror_slots: 3
+  paper_live_mirror_target_notional_usdt: 80.00
+
+execution:
+  fill_model: TO_BE_FROZEN_WITH_STRATEGY
+  baseline_bps_per_side:
+    fee: 10
+    spread: 2
+    slippage: 3
+    total: 15
+  stress_bps_per_side:
+    fee: 10
+    spread: 10
+    slippage: 20
+    total: 40
+  bnb_or_vip_discount_assumed: false
+
+bastian_sources:
+  fusion_model: TO_BE_ASSIGNED
+  source_rules_version: TO_BE_ASSIGNED
+  freshness_policy: TO_BE_ASSIGNED
+  evidence_set_id: TO_BE_ASSIGNED
+
+artifacts:
+  data_quality: TO_BE_ASSIGNED
+  source_replay: TO_BE_ASSIGNED
+  report: TO_BE_ASSIGNED
+  trades: TO_BE_ASSIGNED
