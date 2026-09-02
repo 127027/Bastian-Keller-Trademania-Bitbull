@@ -7,7 +7,8 @@
 - keine Gewinnversprechen;
 - keine versteckte Strategieänderung über UI;
 - pro Order nachvollziehbare Quelle und Entscheidungskette;
-- Roh-Capture/Parser/Context/Actionable/Intent klar getrennt darstellen.
+- Roh-Capture/Parser/Context/Actionable/Intent klar getrennt darstellen;
+- finaler Zielindikator/-stack und dessen signalrelevante Datenquellen müssen diagnostizierbar sein.
 
 ## Navigation
 
@@ -28,6 +29,7 @@ Pro Coin mindestens:
 
 - Kurs;
 - aktueller Indikatorzustand;
+- finaler Zielstack/Version;
 - letzter gültiger Bastian-Kontext;
 - offene Pending Condition soweit vorhanden;
 - Position;
@@ -42,10 +44,28 @@ Global:
 - Tages-PnL/Drawdown;
 - Market Data Health;
 - Indicator Health;
+- Indicator Data Source Health;
 - Source Discovery/Capture/Parser Health;
 - aktuelle Bastian-Session(s);
 - Source-/E2E-Latenz;
 - Not-Aus.
+
+## Indicator-/Datenquellen-Diagnose
+
+Nach Strategie-Freeze muss die UI bzw. Systemdiagnose mindestens zeigen können:
+
+- Zielindikator/-stack und Version;
+- Chart-/Preisprovider;
+- Volumenprovider;
+- aktiven Cross-Exchange-/Volume-Override soweit vorhanden;
+- Marktart der Datenquelle;
+- Sessiontimezone/DST-Regel;
+- Footprint-/POC-Status und Provider soweit signalrelevant;
+- `BLACK_BOX_EXTERNAL`/`NOT_REPRODUCIBLE`-Komponenten;
+- Mapping-/Configversion;
+- Health/Frische der signalrelevanten Datenquellen.
+
+Die normale Nutzeransicht muss nicht mit Rohdiagnostik überladen werden; die Informationen müssen aber eindeutig abrufbar sein.
 
 ## Chart
 
@@ -60,14 +80,14 @@ Zeiträume:
 Darstellung nach DMS 03:
 
 - Candles;
-- Originalindikator-Overlays/Marker soweit reproduzierbar;
+- Originalindikator-Overlays/Marker/Levels soweit reproduzierbar;
 - Bastian-Ereignismarker getrennt von Indikatorsignalen;
 - Pending-Condition-Zone/Trigger/Expiry soweit sinnvoll;
 - Order-/Fillmarker;
 - Position und Entry;
 - provisorische Bars sichtbar markieren.
 
-Strategiefremde Overlays werden nicht angezeigt.
+Strategiefremde Overlays werden nicht angezeigt. Kandidaten, die nicht Teil des eingefrorenen Zielstacks sind, werden im normalen Live-Chart nicht still als Entscheidungshilfe eingeblendet.
 
 ## Bastian-/Source-Ansicht
 
@@ -112,11 +132,12 @@ Start-/Ansichtsmodi:
 - einzelner Coin ×250 USDT;
 - optional 240/3×80 Portfolio-Spiegel;
 - Indicator-Parity;
+- Indicator-Data-Source-Parity;
 - Bastian-Source-Replay;
 - Fusions-Replay;
 - fairer Referenzbot-Vergleich.
 
-Vor Start zeigt die UI Strategieversion, Config, Datenzeitraum, Kostenmodell und Source-/Golden-Version.
+Vor Start zeigt die UI Zielstack, Strategieversion, Config, Datenzeitraum, Indicator-Data-Source-Mapping, Kostenmodell und Source-/Golden-Version.
 
 Beim Vergleich sind Daten-/Kosten-/Kapital-/Paper-Basis und Abweichungen sichtbar. Pflichtmetriken mindestens Netto-PnL, Netto-PnL/Tag, Drawdown, Profit Factor soweit stabil, Kosten, Kapitalnutzung, technische Ausfälle und Latenz.
 
@@ -124,8 +145,8 @@ Beim Vergleich sind Daten-/Kosten-/Kapital-/Paper-Basis und Abweichungen sichtba
 
 Strategierelevante Werte sind nach Freeze versioniert. Änderungen invalidieren abhängige Backtests/Replays. Live-relevante Änderungen benötigen bewusste Bestätigung und Audit.
 
-Source-Allowlist, Capture-Modus, Freshness, Konflikt-/Revisionsregel und Latenzgrenzen dürfen nicht still außerhalb der DMS/Config-Version geändert werden.
+Zielstack, Indicator-Provider/Overrides, Source-Allowlist, Capture-Modus, Freshness, Konflikt-/Revisionsregel und Latenzgrenzen dürfen nicht still außerhalb der DMS/Config-Version geändert werden.
 
 ## Bedienungssicherheit
 
-`LIVE` darf optisch nicht mit `PAPER` verwechselbar sein. Not-Aus, Source-Ausfall, Capture-/Parserfehler, Datenlücke, Reconciliation-Fehler, abgelaufene Kontexte und globale Halt-Zustände müssen prominent sichtbar sein.
+`LIVE` darf optisch nicht mit `PAPER` verwechselbar sein. Not-Aus, Indicator-Provider-Ausfall, Source-Ausfall, Capture-/Parserfehler, Datenlücke, Reconciliation-Fehler, abgelaufene Kontexte und globale Halt-Zustände müssen prominent sichtbar sein.
