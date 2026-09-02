@@ -107,6 +107,8 @@ Restore-Test vor Live und danach mindestens quartalsweise. Restore endet in `LIV
 
 ## Paper-Soak
 
-Mindestens 30 Tage und 720 geschlossene Strategiebars je Symbol, soweit der eingefrorene Timeframe dies so vorsieht. Falls weniger als 20 abgeschlossene Trades vorliegen, Soak bis 20 Trades fortsetzen, maximal 90 Tage. Bastian-Source-Replay und reale Forward-Source-Ereignisse werden separat gezählt und dokumentiert.
+Mindestens **30 Kalendertage**. Zusätzlich muss pro Symbol eine Mindestabdeckung geschlossener Strategiebars erreicht werden, die beim Freeze aus dem tatsächlich verwendeten BTK-Timeframe abgeleitet wird. Beispiel: Bei `1h` entsprechen 30 vollständige Tage 720 erwarteten Stundenbars; bei einem anderen Timeframe gilt eine entsprechend andere Zahl.
+
+Falls nach 30 Tagen weniger als 20 abgeschlossene Trades vorliegen, wird der Soak bis 20 Trades fortgesetzt, maximal 90 Tage. Bastian-Source-Replay und reale Forward-Source-Ereignisse werden separat gezählt und dokumentiert.
 
 Für den Bastian-Layer muss der Paper-Soak zusätzlich reale oder reproduzierbare Fälle für Live-Start, klare Aussage, konditionale Aussage, Revision, Source-Ausfall und Streamende enthalten.
