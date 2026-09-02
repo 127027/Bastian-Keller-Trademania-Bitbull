@@ -2,13 +2,25 @@
 
 ## Zweck
 
-Drei Nachweise werden getrennt behandelt:
+Vier Nachweise werden getrennt behandelt:
 
-1. **Indicator-Parität:** Reagiert die technische Implementierung auf denselben Originalindikatorzustand korrekt?
-2. **Bastian-Source-Parität:** Wird dieselbe tatsächlich vorhandene, gelabelte Bastian-Aussage chronologisch korrekt erfasst, strukturiert und bewertet?
-3. **Performance:** Was ergibt die eingefrorene Logik unter realistischen Kosten und Kapitalregeln?
+1. **Kandidatenauswahl:** Wurde der Zielindikator/-stack aus dem real verfügbaren TradeMania-/Bitbull-Inventar begründet ausgewählt, statt nach einem günstigen Testergebnis?
+2. **Indicator-Parität:** Reagiert die technische Implementierung auf denselben Originalindikatorzustand korrekt und verwendet sie dieselben relevanten Datenquellen/Mappings?
+3. **Bastian-Source-Parität:** Wird dieselbe tatsächlich vorhandene, gelabelte Bastian-Aussage chronologisch korrekt erfasst, strukturiert und bewertet?
+4. **Performance:** Was ergibt die eingefrorene Logik unter realistischen Kosten und Kapitalregeln?
 
 Ein positiver Backtest beweist keine zukünftige Rendite.
+
+## Kandidatenphase vor Backtest
+
+Bevor Performancewerte zur Auswahl verwendet werden dürfen:
+
+- Public-/Member-Inventar gemäß DMS 03/22 erstellen;
+- Kandidaten nach Bastian-Nähe, ETH-Eignung, Determinismus, Repainting, Datenbedarf, Alerts/Automation, Rechte und technischer Reproduzierbarkeit bewerten;
+- finalen Zielstack auswählen und Auswahlversion/hash festhalten;
+- danach Strategieparameter/Settings einfrieren.
+
+Performance darf einen fachlich geeigneten Kandidaten später **validieren oder verwerfen**, aber nicht rückwirkend eine unkontrollierte Suche nach dem höchsten historischen PnL treiben.
 
 ## Historische Testfenster
 
@@ -23,9 +35,30 @@ Ein positiver Backtest beweist keine zukünftige Rendite.
 
 Für Bastian-Aussagen existiert **keine künstliche Drei-Jahres-Vorgabe**. Getestet wird ausschließlich über tatsächlich vorhandene, zeitlich belastbare Evidence und danach über Forward-Paper. Fehlende historische Lives, Aussagen oder Revisionen werden nicht erfunden, interpoliert oder aus späterem Wissen rekonstruiert.
 
+## Indicator-Data-Source-Parität
+
+Ein Indicator-Backtest ist nur dann als paritätsnah gültig, wenn die signalrelevanten Datenquellen der eingefrorenen Referenz entsprechen.
+
+Zu manifestieren sind mindestens:
+
+- Chart-/Preisprovider und Symbolmapping;
+- Volumenprovider und Symbolmapping;
+- Cross-Exchange-/Volume-Override;
+- Marktart `spot|perpetual|futures|other`;
+- Sessiontimezone/DST;
+- Footprint-/POC-Provider und Auflösung, falls relevant;
+- weitere Zusatzdaten;
+- Mapping-/Provider-Hashes soweit verfügbar.
+
+Für den öffentlichen Kandidaten `Trademania - PVSRA Indicator` ist besonders zu prüfen, ob Bastian einen Volume Override verwendet. Ein Backtest mit Binance-Preis + Binance-Volumen ist **nicht automatisch paritätisch**, wenn die Referenzeinstellung z. B. anderen Chartpreis oder anderes Volumen nutzt.
+
+POC-/Footprint-Werte dürfen nicht aus grobem OHLCV angenähert und anschließend als Originalparität bewertet werden. Nicht exakt reproduzierbare Teile werden als `BLACK_BOX_EXTERNAL` oder `NOT_REPRODUCIBLE` gekennzeichnet und getrennt bewertet.
+
 ## Standardläufe
 
+- Kandidaten-/Auswahlreview;
 - Indicator-Golden-/Parity-Test;
+- Indicator-Data-Source-Parity-Test;
 - Bastian-Source-Replay gegen gelabelte echte/eigene zulässige Referenzfälle;
 - Capture-/Parser-/Validation-Replay;
 - Pending-Condition-/Revision-/Expiry-Replay;
@@ -110,6 +143,7 @@ Mindestens:
 - Gebühren/Spread/Slippage;
 - durchschnittlicher Trade und Haltedauer;
 - blockierte/verpasste Signale;
+- Indicator-Parity-/Data-Source-Parity-Status;
 - Source-/Capture-/Parser-/E2E-Latenz soweit beteiligt;
 - Pending Conditions created/met/expired/invalidated;
 - Source-/Parser-Abweichungen;
@@ -117,17 +151,19 @@ Mindestens:
 
 ## Anti-Overfitting
 
+- Zielstack vor Performanceoptimierung dokumentieren;
 - Parameter vor Testfenster einfrieren;
 - keine schlechten Coins nachträglich entfernen;
 - keine Zielrendite rückwärts optimieren;
 - keine Bastian-Regel nachträglich aus dem Ausgang eines Trades ableiten;
+- keine zusätzlichen MACD/RSI/POC-Filter nur deshalb hinzufügen, weil sie einen historischen Lauf verbessern;
 - Sensitivität/OOS bei Tuning;
 - jede Methodikänderung versionieren;
 - nach Beginn eines fairen A/B-Vergleichs kein Zwischenstands-Tuning.
 
 ## Gültiger Lauf
 
-Nur gültig, wenn Datenqualität, Strategieversion, Config, Kostenmodell, Hashes, Indicator-Parität, Source-/Replay-Parität und Artefakte vollständig nachvollziehbar sind. Ein Lauf darf einzelne nicht verfügbare Source-Anteile ausdrücklich als `NOT_REPRODUCIBLE` ausweisen; er darf sie nicht still simulieren.
+Nur gültig, wenn Kandidaten-/Auswahlversion, Datenqualität, Indicator-Data-Source-Mapping, Strategieversion, Config, Kostenmodell, Hashes, Indicator-Parität, Source-/Replay-Parität und Artefakte vollständig nachvollziehbar sind. Ein Lauf darf einzelne nicht verfügbare Source-/Indicator-Anteile ausdrücklich als `NOT_REPRODUCIBLE` ausweisen; er darf sie nicht still simulieren.
 
 ## Fairer späterer Bot-gegen-Bot-Vergleich
 
@@ -141,9 +177,9 @@ Verbindlich identisch bzw. explizit begründet abweichend:
 - dieselbe Startkapital-/Slotbasis im jeweiligen Vergleichsmodus;
 - dieselben Exchange-Filter und Rundungsregeln;
 - derselbe Forward-Paper-Zeitraum;
-- keine nachträgliche Parameteränderung während des Vergleichs.
+- keine nachträgliche Parameter- oder Zielstackänderung während des Vergleichs.
 
-Bastian-Source-Evidence ist eine strategiespezifische Eingabe des BTK-Bots und wird nicht künstlich in den Referenzbot eingespeist. Umgekehrt werden dessen strategiespezifische Inputs nicht dem BTK-Bot zugeschlagen.
+Bastian-Source-Evidence und spezifische Indicator-Source-Mappings sind strategiespezifische Inputs des BTK-Bots und werden nicht künstlich in den Referenzbot eingespeist. Umgekehrt werden dessen strategiespezifische Inputs nicht dem BTK-Bot zugeschlagen.
 
 Verglichen werden mindestens Netto-PnL und Netto-PnL/Tag, Max Drawdown, Profit Factor soweit stabil, Tradezahl, Exposure, Gesamtkosten, Kapitalnutzung, blockierte/ausgelassene Signale, technische Ausfälle, Source-/Execution-Latenz und Reproduzierbarkeit.
 
