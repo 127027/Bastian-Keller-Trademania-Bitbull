@@ -61,3 +61,13 @@
 - Auswahlregel eingefroren: kleinster reproduzierbarer Stack nach aktueller Bastian-Nutzung, ETH-Eignung, Determinismus, Repainting, Alerts/Automation, Backtestbarkeit, Latenz, Rechten, Komplexität und Forward-Paper;
 - Build-Plan so geändert, dass Zielindikator-Auswahl **vor** Implementierung erfolgt;
 - README und Source-Material-README auf Kandidateninventar und Member-Intake aktualisiert.
+
+## 0.5.1-prep – 02.09.2026 – Indicator-Data-Source-Parität
+
+- PVSRA-spezifisches Datenrisiko aufgenommen: Chartpreis und Volumen dürfen aus unterschiedlichen Providern stammen; Volume Override muss deshalb explizit versioniert werden;
+- Preis-, Volumen-, Market-Type-, Session-/Timezone-, Footprint-/POC- und Zusatzdatenquellen als getrennte Strategy-Config eingeführt;
+- klargestellt, dass POC-/Footprint-Werte nicht still aus grobem OHLCV angenähert und als Originalparität ausgegeben werden dürfen;
+- `BLACK_BOX_EXTERNAL`/`NOT_REPRODUCIBLE` für nicht exakt lokal rekonstruierbare Indicator-Komponenten eingeführt;
+- Anforderungen `BTK-STR-007`, `BTK-DAT-007`, `BTK-DAT-008` und `BTK-BKT-012` ergänzt und in Tests/Traceability verankert;
+- Tests, Backtestvalidierung, Config-Schema, Architektur, Monitoring, UI, Risikoregister, Ergebnisformat, Runbook und Glossar auf Target-Stack-/Indicator-Data-Source-Parität synchronisiert;
+- Gate A/B erweitert: Zielstack-Auswahl und Indicator-Source-Mapping müssen vor signalaktivem Paper eingefroren und geprüft sein.
