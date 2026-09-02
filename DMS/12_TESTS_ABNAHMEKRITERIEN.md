@@ -3,23 +3,51 @@
 ## Testebenen
 
 1. Unit-Tests
-2. Indicator-Parity/Golden-Tests
-3. Source-Discovery-/Session-Tests
-4. Capture-/Transcript-/Parser-/Classification-Tests
-5. Strategy-/Fusion-/Conditional-Watcher-Tests
-6. Backtest-/Source-Replay-Tests
-7. Execution-/Failure-Tests
-8. Integration-/Restart-/Recovery-Tests
-9. Paper-Soak/Abnahme
-10. fairer Referenzbot-Vergleich
+2. Kandidateninventar-/Auswahlreview
+3. Indicator-Parity/Golden-/Black-Box-Tests
+4. Indicator-Data-Source-Parity-Tests
+5. Source-Discovery-/Session-Tests
+6. Capture-/Transcript-/Parser-/Classification-Tests
+7. Strategy-/Fusion-/Conditional-Watcher-Tests
+8. Backtest-/Source-Replay-Tests
+9. Execution-/Failure-Tests
+10. Integration-/Restart-/Recovery-Tests
+11. Paper-Soak/Abnahme
+12. fairer Referenzbot-Vergleich
+
+## Kandidateninventar-/Auswahltests
+
+Vor Freeze muss nachgewiesen sein:
+
+- öffentlich verfügbare TradeMania-/Bitbull-Indikatoren wurden inventarisiert;
+- rechtmäßig sichtbare Member-Kandidaten aus Indicator Masterclass, Strategie-Indikator Masterclass, Discord und `trademania.app/bots` wurden geprüft;
+- PVSRA wurde nicht allein wegen seiner öffentlichen Verfügbarkeit automatisch ausgewählt;
+- pro ernsthaftem Kandidaten sind aktuelle Bastian-Nutzung, ETH-Eignung, Determinismus, Repainting, Automation/Alerts, Datenbedarf, Rechte und Backtestbarkeit bewertet;
+- zusätzliche MACD-/POC-/RSI-Komponenten werden nur übernommen, wenn sie gegenüber dem Zielstack einen belegten, nicht redundanten Nutzen haben;
+- die finale Auswahl ist vor Performanceoptimierung dokumentiert und versioniert.
 
 ## Kritische Strategietests
 
-- Originalindikatorzustand entspricht Botzustand;
+- Originalindikatorzustand entspricht Botzustand bzw. dokumentierter Black-Box-Referenz;
 - Bar-Close/Intrabar/Repaint-Verhalten stimmt;
-- Entry/Exit/Reentry/Pyramiding entspricht DMS 03;
+- Entry/Exit/Context/Reentry/Pyramiding entspricht DMS 03;
 - simultane Signale werden deterministisch behandelt;
-- keine historische Marker-Verschiebung wird als frühere Information benutzt.
+- keine historische Marker-/Level-Verschiebung wird als frühere Information benutzt.
+
+## Indicator-Data-Source-Parity
+
+Für jeden signalrelevanten Indikatorbestandteil muss geprüft werden:
+
+- Preis-/Chartprovider entspricht der eingefrorenen Konfiguration;
+- Volumenprovider entspricht der eingefrorenen Konfiguration;
+- ein Cross-Exchange-/PVSRA-Volume-Override wird in Golden-Test, Backtest, Paper und Live identisch abgebildet;
+- Spot-/Perpetual-/Futures-Daten werden nicht still verwechselt;
+- Session-Zeitzone und DST stimmen;
+- benötigte Footprint-/POC-Auflösung und Provider sind reproduzierbar oder ausdrücklich `BLACK_BOX_EXTERNAL`;
+- ein nicht exakt rekonstruierbarer POC-/Footprint-Wert wird nicht durch OHLCV-Näherung als exakt ausgegeben;
+- Provider-/Mappingwechsel invalidiert betroffene Golden-Artefakte und Backtests.
+
+Für `Trademania - PVSRA Indicator` ist dieser Testblock zwingend, falls er Zielstack wird, weil die öffentliche Beschreibung einen separaten Volumen-Override und POC-/Footprint-Funktionen vorsieht.
 
 ## Kritische Source-/Session-Tests
 
@@ -61,9 +89,10 @@ Mindestens:
 - Lücken/Duplikate/OHLC-Verletzungen werden erkannt;
 - keine synthetische Zukunftsinformation;
 - Kosten, Tick/Step/MinNotional stimmen;
-- gleicher Run mit gleichen Hashes liefert identisches Ergebnis;
+- gleicher Run mit gleichen Hashes und identischem Indicator-Source-Mapping liefert identisches Ergebnis;
 - 10×250, Einzeltest und optional 240/3×80 funktionieren;
 - Source-Replay respektiert Published-/Received-/Spoken-Time, Sessionstatus, Revisionen und Expiry;
+- Kandidaten-/Zielstack-Auswahl wird nicht nachträglich anhand des Testfensters umgeschrieben;
 - Manifest und Datenqualitäts-/Source-Evidence-Report vollständig.
 
 ## Executiontests
@@ -83,6 +112,8 @@ Mindestens:
 ## UI-/Betriebstests
 
 - PAPER/LIVE eindeutig sichtbar;
+- finaler Indikator/Stack und Version sichtbar;
+- signalrelevante Indicator-Provider/Overrides diagnostizierbar;
 - Markt-, Indicator-, Discovery-, Capture-, Parser- und Execution-Health getrennt;
 - Bastian-Ereignisse mit Zeit/Freshness nachvollziehbar;
 - Sessionstatus und Pending Conditions sichtbar;
@@ -102,7 +133,7 @@ Mindestens:
 
 ## Fairer Bot-gegen-Bot-Vergleich
 
-Der Vergleich ist nur gültig, wenn beide Systeme denselben Zeitraum und – soweit fachlich möglich – dieselben Marktdaten, Gebühren-/Slippageannahmen, Kapitalregeln und Paper-Zeiträume verwenden. Während des Vergleichs werden keine Parameter aufgrund des Zwischenstands nachoptimiert.
+Der Vergleich ist nur gültig, wenn beide Systeme denselben Zeitraum und – soweit fachlich möglich – dieselben Marktdaten, Gebühren-/Slippageannahmen, Kapitalregeln und Paper-Zeiträume verwenden. Während des Vergleichs werden keine Parameter oder der Zielstack aufgrund des Zwischenstands nachoptimiert.
 
 Pflichtmetriken:
 
@@ -121,8 +152,11 @@ Pflichtmetriken:
 
 ### Gate A – DMS/Strategie
 
+- Kandidateninventar ausreichend vollständig;
+- finaler Zielindikator/minimaler Stack begründet ausgewählt;
 - keine kritische Strategiefrage offen;
 - Originalindikator/Settings/Referenzen vorhanden;
+- Preis-/Volumen-/Session-/POC-/Zusatzdaten-Mapping eingefroren;
 - Bastian-Quellen, Capture-Pfade, Sessionstatus, Freshness, Revisionen und Fusionsmodell eingefroren;
 - Conditional-Watcher-Regeln und Latenzgrenzen definiert;
 - Traceability vollständig.
@@ -130,6 +164,7 @@ Pflichtmetriken:
 ### Gate B – Backtest/Replay
 
 - Indicator-Parität bestanden;
+- Indicator-Data-Source-Parität bestanden bzw. unvermeidbare Black-Box-Anteile ausdrücklich markiert;
 - Bastian-Source-Replay bestanden;
 - Datenqualität grün;
 - Kostenmodell korrekt;
@@ -138,7 +173,7 @@ Pflichtmetriken:
 ### Gate C – Paper Ready
 
 - Execution-/Recoverytests bestanden;
-- Source-/Market-/Capture-/Parser-Health funktioniert;
+- Source-/Market-/Indicator-/Capture-/Parser-Health funktioniert;
 - Secrets/Alerts/Backups eingerichtet;
 - keine kritische Source-Unsicherheit ohne `NO_TRADE`-Fallback.
 
