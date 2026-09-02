@@ -10,41 +10,52 @@ Bewertung: Eintritt `N/M/H`, Auswirkung `N/M/H`.
 | BTK-R-004 | Repainting/Intrabar-Verhalten übersehen | M/H | H | Open-Bar/Reload/Alert-Tests | Strategie nicht freigeben | Strategie/QA |
 | BTK-R-005 | Schulungsaussage wird als technische Signalregel missverstanden | M | H | Quelle/Kontext + Referenztest | DMS korrigieren | Produkt/Strategie |
 | BTK-R-006 | fremder proprietärer Source wird öffentlich committed | M | H | Rechteprüfung/Secret-Scan | entfernen, Rechte/Incident klären | Security |
-| BTK-R-007 | alte strategiespezifische Logik bleibt unbemerkt im BTK-Codepfad | M | H | Repository-Trennung, Tests, Code-Audit | korrigieren, Backtests invalidieren | Engineering |
-| BTK-R-008 | Look-ahead im Backtest | M | H | Replay, Fillsemantik, Review | Runs invalidieren | QA |
-| BTK-R-009 | Datenlücke erzeugt falsches Signal | M | H | Data-Quality/Gap-Fill | Symbol pausieren | Daten |
+| BTK-R-007 | fremde/alte strategiespezifische Logik bleibt unbemerkt im BTK-Codepfad | M | H | Repository-Trennung, Tests, Code-Audit | korrigieren, Runs invalidieren | Engineering |
+| BTK-R-008 | Look-ahead im Backtest/Source-Replay | M | H | chronologischer Replay, Fillsemantik, Review | Runs invalidieren | QA |
+| BTK-R-009 | Datenlücke erzeugt falsches Signal oder falschen Conditional-Trigger | M | H | Data-Quality/Gap-Fill | Symbol/Condition pausieren | Daten |
 | BTK-R-010 | Gebühren/Slippage unterschätzt | H | H | Baseline/Stress/Paper | Freigabe neu bewerten | Backtest |
 | BTK-R-011 | Overfitting auf Zielprofit | H | H | Baseline zuerst; Holdout; Suchlog | Variante verwerfen | Strategie |
 | BTK-R-012 | Doppelorder nach Timeout/Restart | M | H | Idempotency/Reconciliation | Live halt | Execution |
 | BTK-R-013 | Fremdorder/manueller Kontoeingriff | M | H | eigener Account | Live halt | Betreiber |
 | BTK-R-014 | API-Key kompromittiert | N/M | H | Least Privilege/IP/Secret-Store | sperren/rotieren | Security |
 | BTK-R-015 | Pair delistet/pausiert | M | H | Statusaudit | Coin pausieren | Daten/Betreiber |
-| BTK-R-016 | Feed/Rate-Limit-Ausfall | H | M/H | Backoff/Watchdog/REST | Entries pausieren | Plattform |
+| BTK-R-016 | Marktfeed/Rate-Limit-Ausfall | H | M/H | Backoff/Watchdog/REST | Entries/Conditions pausieren | Plattform |
 | BTK-R-017 | falsche Zeit/Zeitzone | N/M | H | UTC/NTP | halt | Plattform |
 | BTK-R-018 | DB-Korruption/Speicher voll | N/M | H | Integrity/Backup | halt/restore | Betrieb |
-| BTK-R-019 | UI zeigt stale Wert als live | M | H | Freshness/Badge | warnen/pausieren | UI/Daten |
+| BTK-R-019 | UI zeigt stale Wert/Kontext als live | M | H | Freshness/Badge | warnen/pausieren | UI/Daten |
 | BTK-R-020 | Paper/Live verwechselt | N/M | H | Banner/Bestätigung/getrennte Keys | Not-Aus | UI/Betreiber |
 | BTK-R-021 | Zielrendite als Garantie verstanden | M | H | Reportwarnungen | Kommunikation korrigieren | Produkt |
-| BTK-R-022 | altes Slotranking ungeprüft übernommen | M | H | DMS 03 + simultane Signaltests | Ranking entfernen/neu entscheiden | Strategie |
+| BTK-R-022 | ungeprüfte Slotpriorität übernommen | M | H | DMS 03 + simultane Signaltests | Ranking entfernen/neu entscheiden | Strategie |
 | BTK-R-023 | 10×250 mit 240 Paperkapital verwechselt | M | H | getrennte Modi/Ledger | Run invalidieren | QA/UI |
-| BTK-R-024 | vorhandener Bot wird unnötig strukturell umgebaut | M | M/H | Minimaländerungsregel | Refactor zurücknehmen | Engineering |
+| BTK-R-024 | Bot wird unnötig strukturell umgebaut | M | M/H | Minimaländerungsregel | Refactor zurücknehmen | Engineering |
+| BTK-R-025 | Vergleichsbot erhält andere Daten/Kosten/Kapitalbasis | M | H | Vergleichsmanifest + gleiche Hashes | Vergleich invalidieren | QA |
+| BTK-R-026 | Zwischenstands-Tuning verfälscht A/B-Vergleich | M | H | Parameterfreeze vor Vergleich | Vergleich neu starten | Strategie/QA |
+
+## Source-/Sprach-/Live-Risiken
+
+| ID | Risiko | Eintritt | Auswirkung | Prävention/Erkennung | Reaktion | Owner |
+|---|---|---:|---:|---|---|---|
+| BTK-R-029 | Hypothese wird als Order missverstanden | M | H | Actionable-Schema + Pflichtfelder | `NO_TRADE` | Strategy/QA |
+| BTK-R-030 | Replay/altes Video wird als live verarbeitet | M | H | Sessionstatus + Published/Received + Freshness | Event blockieren | Source |
+| BTK-R-031 | anderer Mentor wird Bastian zugeschrieben | M | H | Speaker-/Source-Allowlist | Event blockieren | Source |
+| BTK-R-032 | Bastian revidiert Aussage nach wenigen Minuten | H | H | versionierter Kontext + Supersede-Regel | älteren Kontext invalidieren | Strategy |
+| BTK-R-033 | Audio/Caption falsch transkribiert | M | H | Capture-/Parser-Tests + kein Trade bei kritischer Unsicherheit | `NO_TRADE` | Source/QA |
+| BTK-R-034 | Fake-/Impersonation-Kanal liefert Signal | M | H | ausschließlich allowgelistete offizielle Source-/Channel-IDs | Source sperren | Security/Source |
+| BTK-R-035 | Live-Latenz macht Entry wirtschaftlich unbrauchbar | M | H | Latenzmessung + Preisabweichungs-/Freshness-Guard | Event blockieren | Strategy/Execution |
+| BTK-R-036 | Community-/Schulungsinhalt wird unzulässig öffentlich gespiegelt | N/M | H | private Speicherung, nur Hash/Metadaten in Public Git | entfernen/Incident | Security |
+| BTK-R-037 | Marketingkalender ändert sich, Bot wartet auf falschen Zeitpunkt | H | M/H | dynamische Session Discovery statt hart codiertem Plan | Source-Health warnen | Source |
+| BTK-R-038 | konditionale Aussage triggert auf falschem Marktwert/Timeframe | M | H | Condition-Schema + Market-Feed-Test | Condition invalidieren | Strategy/Data |
+| BTK-R-039 | Pending Condition läuft nach Expiry weiter | M | H | Expiry-Watchdog + Tests | Condition blockieren | Strategy |
+| BTK-R-040 | Restart reaktiviert alte Pending Condition | M | H | Freshness/Reconciliation beim Restore | nicht reaktivieren | Operations |
+| BTK-R-041 | Streamende wird fälschlich als Exit oder Kontextverlängerung interpretiert | M | H | DMS-03-Regel + Session-State-Test | `NO_ACTION`/Incident | Strategy |
+| BTK-R-042 | Source-Ausfall führt zu stiller Nutzung alter Aussage | M | H | Source Health + Context Expiry | Source-Layer pausieren | Operations |
+| BTK-R-043 | automatische Zusammenfassung fügt nicht gesagte Details hinzu | M | H | Rohreferenz + strukturierte Pflichtfelder + Referenztest | Event verwerfen | Parser/QA |
+| BTK-R-044 | mehrere Assets/Szenarien in einem Satz werden falsch verbunden | M | H | Segmentation + Multi-Asset-Fixtures | Event auf UNKNOWN | Parser/QA |
 
 ## Reviewtakt
 
 - nach Erhalt des Indikators;
+- nach Freischaltung neuer Bastian-/TradeMania-Quellen;
 - vor jedem Gate;
 - nach Incident oder Strategieänderung;
 - im Livebetrieb mindestens monatlich.
-
-## Zusätzliche Source-/Sprachrisiken
-
-| ID | Risiko | W | A | Prävention |
-|---|---|---:|---:|---|
-| BTK-R-029 | Hypothese wird als Order missverstanden | M | H | Actionable-Schema + deterministische Pflichtfelder |
-| BTK-R-030 | Replay/altes Video wird als live verarbeitet | M | H | Published/Received/Live-Status + Freshness |
-| BTK-R-031 | anderer Mentor wird Bastian zugeschrieben | M | H | Speaker-/Source-Allowlist |
-| BTK-R-032 | Bastian revidiert Aussage nach wenigen Minuten | H | H | versionierter Kontext + neueste Aussage gewinnt nach Regel |
-| BTK-R-033 | Audio/Caption falsch transkribiert | M | H | Confidence + Referenztests + kein Trade bei kritischer Unsicherheit |
-| BTK-R-034 | Fake-/Impersonation-Kanal liefert Signal | M | H | ausschließlich verifizierte/allowgelistete Quellen |
-| BTK-R-035 | Live-Latenz macht Entry wirtschaftlich unbrauchbar | M | H | Latenzmessung + Preisabweichungs-/Freshness-Guard |
-| BTK-R-036 | Community-/Schulungsinhalt wird unzulässig öffentlich gespiegelt | L | H | private Speicherung, nur Hash/Metadaten in Public Git |
