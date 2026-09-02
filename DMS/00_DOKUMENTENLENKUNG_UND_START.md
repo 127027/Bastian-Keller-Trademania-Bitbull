@@ -6,7 +6,20 @@ Dieses DMS ist die maßgebliche Produktspezifikation für den eigenständigen **
 
 Der strategieneutrale technische Projekt-Unterbau ist bereits als Ausgangsbasis in dieses Repository gespiegelt. Botarchitektur, Datenhaltung, Backtestprinzipien, Paper-/Live-Trennung, Kapitalmodell, Orderzustände, Sicherheitsmechanismen, UI-Grundsätze, Recovery, Audit und Tests werden wiederverwendet, soweit sie strategiespezifisch neutral sind und die neue Strategie keine fachlich zwingende Abweichung erfordert.
 
-Dieses DMS ist aktuell eine **vorbereitete Spezifikation**. Es darf noch keine konkrete Bastian-Keller-Indikatorlogik oder Sprachregel erfinden. Erst nach rechtmäßigem Erhalt des tatsächlichen Indikators, seiner Einstellungen und geeigneter Live-/Update-Referenzen wird Dokument 03 vollständig geschlossen und die Strategieversion eingefroren.
+Dieses DMS ist aktuell eine **vorbereitete Spezifikation**. Es darf noch keine konkrete Bastian-Keller-Indikatorlogik oder Sprachregel erfinden. Vor dem Strategie-Freeze werden zuerst alle öffentlich und rechtmäßig im Memberbereich verfügbaren TradeMania-/Bitbull-Indikator-/Bot-Kandidaten inventarisiert, danach wird der minimale Zielstack bewusst ausgewählt und erst anschließend DMS 03 vollständig geschlossen.
+
+## Aktueller Recherche-/Zugangsstand
+
+Stand 02.09.2026:
+
+- öffentlich verifiziert: `Trademania - PVSRA Indicator` des TradingView-Publishers `BitbullTrading` als realer TradeMania-/Bitbull-Indikator-Kandidat;
+- öffentlich verifiziert: TradeMania bewirbt eine eigene `TradeMania Indikator Masterclass` sowie eine `Strategie-Indikator Masterclass`;
+- Eigentümerzugang vorhanden: TradeMania Discord / Live-/Memberbereich;
+- Eigentümerzugang vorhanden: `https://trademania.app/bots`;
+- öffentlich belegte ergänzende Werkzeuge im Bitbull-/TradeMania-Umfeld: MACD, POC/VRVP/VPVR und RSI;
+- **noch nicht entschieden:** welcher Indikator bzw. minimale Stack Bastians aktuelle Strategie für unseren Bot am besten und reproduzierbar abbildet.
+
+Der PVSRA-Indikator ist damit ein **verifizierter Kandidat**, aber keine automatisch freigegebene Strategie. Member-Inhalte und `/bots` werden erst nach tatsächlicher Sichtung fachlich bewertet. Geschützte Rohinhalte werden nicht in dieses öffentliche Repository kopiert.
 
 ## Repositorybasis
 
@@ -21,7 +34,9 @@ Dieses Repository ist die eigenständige Wahrheit für das Bastian-Keller-/Trade
 
 Die Dokumentation deckt ab:
 
-- Erfassung und exakte Spezifikation des neuen Indikators;
+- vollständiges Indikator-/Bot-Kandidateninventar aus öffentlichen und Member-Quellen;
+- begründete Auswahl des kleinsten reproduzierbaren Zielindikator-/Kontextstacks;
+- Erfassung und exakte Spezifikation des final ausgewählten Indikators;
 - 24/7-Erkennung und Verarbeitung freigegebener offizieller Bastian-Keller-Live-/Update-Quellen;
 - Source-Session-Lifecycle: angekündigt, live, beendet, Replay, stale;
 - technisch/rechtlich zulässige Erfassung über verfügbare offizielle Metadaten, Untertitel, Transkripte, APIs oder andere freigegebene Wege;
@@ -45,7 +60,7 @@ Bei Widerspruch gilt:
 1. schriftlich vom Eigentümer freigegebene Entscheidung im Entscheidungslog;
 2. die eingefrorene normative Strategie in Dokument 03;
 3. DMS-Dokumente mit Status `VERBINDLICH`;
-4. rechtmäßig verfügbarer Originalindikator, Einstellungen, Alertdefinitionen und ggf. Quellcode/Hash als Referenzquelle;
+4. rechtmäßig verfügbarer final ausgewählter Originalindikator, Einstellungen, Alertdefinitionen und ggf. Quellcode/Hash als Referenzquelle;
 5. vom Eigentümer bereitgestellte Screenshots, Exporte und reproduzierbare Referenzbeobachtungen;
 6. offizielle Inhalte von Bitbull/TradeMania/Bastian Keller, z. B. Dokumentation, öffentliche oder rechtmäßig zugängliche Schulungsunterlagen, Videos, Livestreams und Marktupdates;
 7. sonstige Kommentare, Beispiele und Interpretationen.
@@ -62,9 +77,9 @@ Bei Widerspruch gilt:
 | NACHWEIS AUSSTEHEND | Vorgabe ist definiert, aber noch nicht durch Artefakt/Test belegt |
 | VERWORFEN | darf nicht implementiert werden |
 
-Aktueller Paketstatus: **BTK-DMS PREPARED / STRATEGIE OFFEN**.
+Aktueller Paketstatus: **BTK-DMS PREPARED / KANDIDATENINVENTAR AKTIV / STRATEGIE OFFEN**.
 
-Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-Strategie ist noch nicht eingefroren, weil Originalindikator und vollständige Source-Evidence noch fehlen. Deshalb dürfen noch kein signalaktiver BTK-Paper-/Live-Betrieb und keine Performanceaussage daraus abgeleitet werden.
+Die BTK-Projektstruktur ist vorbereitet. Ein öffentlicher Indikator-Kandidat ist verifiziert und Member-Zugänge sind vorhanden, aber der finale Zielstack sowie die Bastian-Live-Strategie sind noch nicht eingefroren. Deshalb dürfen noch kein signalaktiver BTK-Paper-/Live-Betrieb und keine Performanceaussage daraus abgeleitet werden.
 
 ## Dokumentenkarte
 
@@ -72,7 +87,7 @@ Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-St
 |---|---|
 | `01_PRODUKTVISION_SCOPE.md` | Ziel, Grenzen und Nutzerrollen |
 | `02_VERBINDLICHE_ANFORDERUNGEN.md` | funktionale und nichtfunktionale Anforderungen |
-| `03_STRATEGIE_BITBULL_TRADEMANIA_BASTIAN_KELLER.md` | normative Strategieaufnahme, Live-Source-Pipeline und spätere Signaldefinition |
+| `03_STRATEGIE_BITBULL_TRADEMANIA_BASTIAN_KELLER.md` | Kandidatenauswahl, normative Strategieaufnahme, Live-Source-Pipeline und spätere Signaldefinition |
 | `04_MARKT_KAPITAL_RISIKO.md` | Märkte, Kapital und Schutzregeln |
 | `05_MARKTDATEN_UND_AKTUALISIERUNG.md` | Daten, Lücken, Startup und Update |
 | `06_BACKTEST_UND_VALIDIERUNG.md` | Signalparität, Source-Replay, Backtest, Kosten und Vergleich |
@@ -83,7 +98,7 @@ Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-St
 | `11_SICHERHEIT_COMPLIANCE.md` | Schlüssel, Rechte, Audit und Quellenrechte |
 | `12_TESTS_ABNAHMEKRITERIEN.md` | Testpyramide und Freigabegates |
 | `13_KONFIGURATION_UND_SCHEMATA.md` | Konfigurationsfelder und Validierung |
-| `14_BUILD_PLAN_UND_DEFINITION_OF_DONE.md` | Umsetzungsreihenfolge |
+| `14_BUILD_PLAN_UND_DEFINITION_OF_DONE.md` | Kandidateninventar, Auswahl und Umsetzungsreihenfolge |
 | `15_TRACEABILITY_MATRIX.md` | Anforderung → Test → Artefakt |
 | `16_ENTSCHEIDUNGSLOG_UND_OFFENE_PUNKTE.md` | zentrale Beschlüsse und offene Strategiefragen |
 | `17_GLOSSAR.md` | eindeutige Begriffe |
@@ -91,7 +106,7 @@ Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-St
 | `19_RISIKOREGISTER.md` | fachliche, technische und betriebliche Restrisiken |
 | `20_BETRIEBSRUNBOOK.md` | Bedien- und Störungsabläufe |
 | `21_GITHUB_ZUSAMMENARBEIT.md` | Repository-, Branch-, Review- und Merge-Regeln |
-| `22_QUELLEN_UND_BINANCE_PRUEFUNG.md` | Quellenkatalog, öffentliche TradeMania-Basis und Börsenprüfung |
+| `22_QUELLEN_UND_BINANCE_PRUEFUNG.md` | Quellenkatalog, Kandidateninventar, TradeMania-Basis und Börsenprüfung |
 | `23_ORDNERSTRUKTUR_UND_EINSTIEGSPUNKT.md` | Projektstruktur und technischer Einstieg |
 
 ## Änderungsprozess
@@ -101,11 +116,12 @@ Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-St
 3. Sobald die neue Strategie eingefroren ist, erhöht jede Änderung an ihrer Logik die Strategieversion und invalidiert betroffene Backtests/Replays.
 4. Ein Backtest/Replay nennt immer Code-/Buildversion, Strategiehash, Konfigurationshash, Datenhash, Source-Evidence-Version und Kostenmodell.
 5. Nur bestätigte Strategieelemente dürfen implementiert werden.
-6. Erst wenn Dokument 03 keine kritische Strategiefrage mehr auf `OFFEN` enthält, beginnt der signalaktive Codeumbau.
+6. Erst wenn Kandidateninventar und Dokument 03 keine kritische Strategiefrage mehr auf `OFFEN` enthalten, beginnt der signalaktive Codeumbau.
 
 ## Nichtverhandelbare Wahrheitsregeln
 
 - Keine erfundenen Indikatorformeln oder Parameter.
+- Kein Kandidat wird nur wegen Marketing, Popularität oder einem einzelnen guten Lauf zum Zielindikator erklärt.
 - Keine erfundenen Bastian-Aussagen oder Bedeutungen.
 - Keine erfundenen Backtestwerte.
 - Keine Ergebnisgarantie oder Renditezusage.
@@ -114,13 +130,13 @@ Die BTK-Projektstruktur ist vorbereitet. Die neue Indikator- und Bastian-Live-St
 - Keine Order aus einem unsicheren, mehrdeutigen oder nicht ausreichend frischen Source-Ereignis.
 - Kein Replay oder altes Video wird als aktuelles Live-Signal behandelt.
 - Ein blockierter Trade muss mit Ursache protokolliert werden.
-- Der neue Indikator wird erst implementiert, wenn seine beobachtbare und/oder technische Signaldefinition reproduzierbar dokumentiert ist.
+- Der finale Indikator/Stack wird erst implementiert, wenn Auswahlbegründung, beobachtbare/technische Signaldefinition und relevante Bastian-Nutzung reproduzierbar dokumentiert sind.
 
 ## Bastian-Keller-Quellenmodell
 
 Diese Variante ist fachlich nicht nur ein Indikatorwechsel. Sie bildet eine **Bastian-Keller-Strategiequelle** ab, bestehend aus:
 
-1. dem rechtmäßig bereitgestellten TradeMania-/Bastian-Keller-Indikator;
+1. dem bewusst ausgewählten rechtmäßig zugänglichen TradeMania-/Bitbull-Indikator bzw. minimalen Stack;
 2. offiziellen Aussagen von Bastian Keller in Live-Tradings, Marktupdates und freigegebenen Community-/Member-Inhalten;
 3. daraus reproduzierbar abgeleiteten, versionierten Handelsregeln.
 
@@ -141,7 +157,7 @@ Nach Freigabe muss jede Bastian-Reaktion diese Reihenfolge durchlaufen:
 5. Asset, Aussageklasse, Richtung/Aktion, Preis/Zone und Bedingung strukturieren;
 6. Unsicherheit, Freshness und widersprechende neuere Aussagen prüfen;
 7. konditionale Regeln gegebenenfalls als `PENDING_CONDITION` weiterbeobachten;
-8. Fusionsregel mit Indikator anwenden;
+8. Fusionsregel mit final ausgewähltem Indikator/Stack anwenden;
 9. Risk-, Capital-, Exchange- und Price-Deviation-Gates prüfen;
 10. erst danach `EXECUTION_INTENT` erzeugen und vollständig auditieren.
 
