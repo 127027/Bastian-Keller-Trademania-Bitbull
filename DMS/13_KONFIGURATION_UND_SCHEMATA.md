@@ -7,7 +7,8 @@
 - Einheiten im Feldnamen oder Schema eindeutig;
 - Secrets nur als Referenz auf Secret-Store;
 - Strategie-, Config-, Daten- und Quellenhashes in Runs/Entscheidungen;
-- DMS 03 ist für strategiespezifische Werte maßgeblich.
+- DMS 03 ist für strategiespezifische Werte maßgeblich;
+- keine signalaktive Source-Konfiguration mit `OFFEN`-Pflichtfeldern.
 
 ## Baseline-Konfiguration
 
@@ -42,16 +43,52 @@ strategy:
   timeframe: OFFEN
   fusion_model: OFFEN
   trade_on_open_bar: false
+  slot_priority: OFFEN
 
 bastian_sources:
   primary_speaker: Bastian Keller
-  youtube_live: OFFEN
-  youtube_updates: OFFEN
-  telegram: OFFEN
-  trademania_member_content: OFFEN
   other_mentors_allowed: false
+  source_allowlist_version: UNFROZEN
+  dynamic_schedule_discovery: true
   freshness_policy: OFFEN
   conflict_policy: OFFEN
+  revision_policy: OFFEN
+  max_end_to_end_latency_ms: OFFEN
+  no_trade_on_critical_uncertainty: true
+
+  sources:
+    youtube_live:
+      enabled: false
+      official_channel_id: OFFEN
+      capture_mode: OFFEN
+      live_detection_mode: OFFEN
+    youtube_updates:
+      enabled: false
+      official_channel_id: OFFEN
+      capture_mode: OFFEN
+    telegram:
+      enabled: false
+      official_channel_id: OFFEN
+      capture_mode: OFFEN
+    trademania_member_content:
+      enabled: false
+      source_id: OFFEN
+      capture_mode: OFFEN
+
+source_pipeline:
+  session_states: [scheduled, live, ended, replay, stale, unavailable, unknown]
+  actionable_required_fields:
+    - speaker
+    - asset
+    - action_or_condition
+    - freshness
+    - source_status
+  raw_transcript_is_actionable: false
+  parser_confidence_alone_is_actionable: false
+  conditional_watcher_enabled: false  # erst nach Strategie-Freeze
+  capture_latency_limit_ms: OFFEN
+  parser_latency_limit_ms: OFFEN
+  source_stale_seconds: OFFEN
 
 capital:
   shared_cash_usdt: 240
@@ -69,6 +106,8 @@ backtest:
   slippage_bps_per_side: 3
   stress_spread_bps_per_side: 10
   stress_slippage_bps_per_side: 20
+  source_replay_required: true
+  fair_reference_comparison: true
 
 data:
   daily_audit_utc: "00:05"
@@ -101,6 +140,23 @@ ui:
   ranges: [today, 1w, 1m, 1y, 3y]
 ```
 
+## Source-Allowlist-Schema
+
+Jede signalrelevante Quelle benötigt mindestens:
+
+- eindeutige Provider-/Channel-/Source-ID;
+- URL oder private Referenz;
+- Quellenklasse;
+- `speaker_scope`;
+- zulässige Capture-Methode;
+- Live-/Replay-Erkennung;
+- Freshness-/Latenzgrenze;
+- Rechte-/Zugriffsstatus;
+- Aktivierungsstatus;
+- Config-/Evidence-Hash.
+
+Eine URL allein reicht nicht zur Allowlist, wenn die Quelle durch Channel-/Account-ID sicherer identifiziert werden kann.
+
 ## Signal-/Decision-Snapshot
 
 Jeder Strategy-Snapshot enthält mindestens:
@@ -109,8 +165,11 @@ Jeder Strategy-Snapshot enthält mindestens:
 - config hash;
 - symbol/timeframe/bar time;
 - indicator reference/state;
-- source-event IDs;
+- source-session/event IDs;
 - Bastian classification/freshness;
+- pending-condition state soweit vorhanden;
+- capture/parser/validation versions;
+- source/capture/parser/end-to-end latency;
 - fusion rule version;
 - decision/action/block reason.
 
@@ -124,6 +183,7 @@ Pflichtfelder:
 - Config hash;
 - Datenhash/Zeitraum;
 - Source-Evidence-/Label-Version;
+- Session-/Replay-Policy-Version;
 - Kostenmodell;
 - Kapitalmodell;
 - erzeugte Artefakte;
@@ -131,4 +191,13 @@ Pflichtfelder:
 
 ## Validierung
 
-Konfiguration ist ungültig, wenn beispielsweise `LIVE` ohne Live-Freigabe gesetzt wird, Slotnotional × Slots den Cashpool unzulässig überschreitet, eine nicht eingefrorene Strategie signalaktiv geschaltet wird oder Bastian-Source-Trading ohne Freshness-/Konfliktregel aktiviert werden soll.
+Konfiguration ist ungültig, wenn beispielsweise:
+
+- `LIVE` ohne Live-Freigabe gesetzt wird;
+- Slotnotional × Slots den Cashpool unzulässig überschreitet;
+- eine nicht eingefrorene Strategie signalaktiv geschaltet wird;
+- Bastian-Source-Trading ohne Freshness-/Konflikt-/Revisionsregel aktiviert werden soll;
+- eine signalaktive Quelle keine Allowlist-ID oder keinen dokumentierten Capture-Pfad besitzt;
+- `raw_transcript_is_actionable=true` gesetzt würde;
+- Conditional-Watcher aktiv ist, obwohl Trigger-/Expiry-/Invalidation-Regeln noch offen sind;
+- eine erforderliche Latenzgrenze noch `OFFEN` ist.
