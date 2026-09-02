@@ -130,7 +130,8 @@ risk:
 
 operations:
   paper_soak_min_days: 30
-  paper_soak_min_closed_bars_per_symbol: 720
+  paper_soak_min_closed_bars_per_symbol: OFFEN_BY_STRATEGY_TIMEFRAME
+  paper_soak_reference_bars_if_1h: 720
   paper_soak_min_completed_trades: 20
   paper_soak_max_days_if_trade_count_low: 90
   telegram_p1_p2_required: true
@@ -139,6 +140,8 @@ ui:
   language: de
   ranges: [today, 1w, 1m, 1y, 3y]
 ```
+
+`paper_soak_reference_bars_if_1h: 720` ist ausschließlich eine Rechenreferenz für einen möglichen 1h-Timeframe. Der verbindliche Wert wird erst beim Strategie-Freeze aus dem tatsächlich verwendeten BTK-Timeframe abgeleitet.
 
 ## Source-Allowlist-Schema
 
@@ -200,4 +203,5 @@ Konfiguration ist ungültig, wenn beispielsweise:
 - eine signalaktive Quelle keine Allowlist-ID oder keinen dokumentierten Capture-Pfad besitzt;
 - `raw_transcript_is_actionable=true` gesetzt würde;
 - Conditional-Watcher aktiv ist, obwohl Trigger-/Expiry-/Invalidation-Regeln noch offen sind;
-- eine erforderliche Latenzgrenze noch `OFFEN` ist.
+- eine erforderliche Latenzgrenze noch `OFFEN` ist;
+- `paper_soak_min_closed_bars_per_symbol` vor Strategie-Freeze willkürlich auf einen fremden Timeframe festgesetzt wird.
