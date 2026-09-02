@@ -87,7 +87,7 @@ Alle Anforderungen verwenden das Präfix `BTK-`.
 | ID | Anforderung | Status |
 |---|---|---|
 | BTK-OPS-001 | 24/7-Paper ist Pflicht vor Live. | VERBINDLICH |
-| BTK-OPS-002 | Paper-Soak mindestens 30 Kalendertage. Die zusätzlich erforderliche Mindestzahl geschlossener Strategiebars je Symbol wird beim Strategie-Freeze aus dem tatsächlich verwendeten BTK-Timeframe abgeleitet; 720 Bars gelten nur bei einem 1h-Timeframe. Liegen nach 30 Tagen weniger als 20 abgeschlossene Trades vor, läuft der Soak bis 20 Trades weiter, maximal 90 Tage. | VERBINDLICH |
+| BTK-OPS-002 | Paper-Soak mindestens 30 Kalendertage. Die zusätzlich erforderliche Mindestzahl geschlossener Strategiebars je Symbol wird beim Strategie-Freeze aus dem tatsächlich verwendeten BTK-Timeframe abgeleitet. Liegen nach 30 Tagen weniger als 20 abgeschlossene Trades vor, läuft der Soak bis 20 Trades weiter, maximal 90 Tage. | VERBINDLICH |
 | BTK-OPS-003 | P1/P2-Alerts gehen an Telegram; Ausfall kritischer Alarmierung pausiert neue Live-Entries. | VERBINDLICH |
 | BTK-OPS-004 | Backup/Restore, Not-Aus, Daten- und Source-Health müssen vor Live getestet sein. | VERBINDLICH |
 | BTK-OPS-005 | Live wird niemals allein durch einen positiven Backtest aktiviert. | VERBINDLICH |
